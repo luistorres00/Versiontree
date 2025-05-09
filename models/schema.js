@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 // Definir modelo Mongoose para os dados
 const dadoSchema = new mongoose.Schema({
-  corrida:{
+  corrida: {
     type: Number,
   },
-  camera:{
+  camera: {
     type: String,
   },
   curva: {
@@ -27,6 +27,9 @@ const dadoSchema = new mongoose.Schema({
     type: Boolean,
   },
   obs: {
+    type: String,
+  },
+  userID: {
     type: String,
   },
 });

@@ -7,6 +7,15 @@
     <link rel="stylesheet" type="text/css" href="cssS/cs.css">
     <link rel="manifest" href="pwa/manifest.json" />   
 </head>
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/pwa/sw.js')
+          .then(reg => console.log('SW registrado:', reg.scope))
+          .catch(err => console.error('Falha no registro:', err));
+      });
+    }
+    </script>
 <body>
     <!-- Vídeo Container -->
     <div id="videoContainer"></div>
@@ -25,6 +34,11 @@
             </form>
         </div>
     </div>
-    <script src="JSs/scriptslogin.js"></script>
+    <script
+        if('service-worker'in navigator) {
+            navigator.serviceworker.register('/pwa/service-worker.js');
+        }
+    
+     src="JSs/scriptslogin.js"></script>
 </body>
 </html>

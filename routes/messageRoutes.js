@@ -1,0 +1,17 @@
+const express = require("express");
+const router = express.Router();
+const { addMessage, getMessages } = require("../controller/messagesController");
+
+// Route para armazenar mensagens
+router.post("/addMessage", (req, res) => {
+  console.log("Inserting message");
+  addMessage(req, res);
+});
+
+// Route para ir buscar mensagens
+router.get("/getMessages", (req, res) => {
+  console.log("Fetching messages");
+  getMessages(req, res);
+});
+
+module.exports = router;

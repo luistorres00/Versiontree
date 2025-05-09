@@ -6,6 +6,7 @@ const {
   deleteUser,
   loginUser,
   logoutUser,
+  fetchById,
 } = require("../controller/authController");
 const authenticateToken = require("../middleware/authenticateToken");
 
@@ -24,6 +25,22 @@ router.delete("/delete/:id", (req, res) => {
   deleteUser(req, res);
 });
 
+// Rota para ir buscar o user por ID
+router.get("/fetchUser/:id", async (req, res) => {
+  const userID = req.params.id;
+  try {
+    //console.log("Received request to /fetchUser");
+    const user = await fetchById(userID);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: "Usuário não encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erro interno", error });
+  }
+});
+
 // Rota protegida
 router.get("/protected", authenticateToken, (req, res) => {
   console.log("Received GET request to /protected");
@@ -37,7 +54,7 @@ router.post("/login", (req, res) => {
 });
 
 // Rota para fazer logout
-router.post('/logout', (req, res) => {
+router.post("/logout", (req, res) => {
   console.log("Received POST request to /logout");
   logoutUser(req, res);
 });

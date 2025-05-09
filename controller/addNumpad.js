@@ -7,7 +7,7 @@ exports.addDataNumpad = async (req, res) => {
     // Criar um novo objeto de dados com os dados recebidos
     const novoDado = new DadosNumpad({
       numberButtons,
-      numberCorrida
+      numberCorrida,
     });
     console.log(novoDado);
     // Salvar o novo dado no banco de dados

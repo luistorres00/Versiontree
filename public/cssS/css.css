@@ -1,11 +1,11 @@
 /* Estilos CSS */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow-y: auto;
 }
-
 
 @media (min-width: 400px) and (max-width: 633px) {
   body {
@@ -16,7 +16,6 @@ html, body {
     padding: 10px;
   }
 }
-
 
 /* Para tablets*/
 @media (min-width: 700px) and (max-width: 1024px) {
@@ -42,7 +41,7 @@ html, body {
 }
 
 body {
-  font-family: 'Arial', Helvetica, sans-serif;
+  font-family: "Arial", Helvetica, sans-serif;
   margin: 20px;
   background-color: #f4f4f4;
   color: #575656;
@@ -50,13 +49,13 @@ body {
 }
 
 @font-face {
-    font-family: 'Arial';
-    src: url('fonts/arial.woff') format('woff'); /* Ajuste o caminho e formato conforme necessário */
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Arial";
+  src: url("fonts/arial.woff") format("woff"); /* Ajuste o caminho e formato conforme necessário */
+  font-weight: normal;
+  font-style: normal;
 }
 
-container{
+container {
   display: flex;
   flex-wrap: wrap; /* Permite que os elementos se ajustem automaticamente */
   justify-content: space-between;
@@ -121,7 +120,7 @@ container{
   left: 0;
   width: 100%;
   height: 97px;
-  background-color: #E30613;
+  background-color: #e30613;
   padding: 2px;
   z-index: 1000;
   display: flex;
@@ -169,23 +168,22 @@ container{
 }
 
 @media screen and (max-width: 768px) {
-  .table-container{
+  .table-container {
     position: relative;
     top: 0;
     width: 100%;
     max-width: 420px;
     overflow-y: auto;
-   
   }
-  #tabela{
+  #tabela {
     top: 0;
     width: 100%;
   }
-  table thead{
+  table thead {
     margin-top: -70px;
     padding-top: 0;
   }
-  #numpad-table{
+  #numpad-table {
     width: 20vw;
     max-width: 250px;
     margin-right: 0px;
@@ -193,27 +191,27 @@ container{
   .search-input {
     width: 150px;
   }
-  
+
   #filtroImg {
     width: 22px;
     height: 22px;
   }
 }
-#horainput{
+#horainput {
   width: 300px;
   height: 40px;
   font-size: 15px;
 }
 
 @media screen and (max-width: 576px) {
-  table thead{
+  table thead {
     margin-top: -10px;
   }
   .search-input {
     width: 120px;
     font-size: 14px;
   }
-  
+
   #filtroImg {
     width: 20px;
     height: 20px;
@@ -224,17 +222,17 @@ container{
   .search-container {
     gap: 5px;
   }
-  
+
   .search-box {
     gap: 5px;
   }
-  
+
   .search-input {
     width: 90px;
     padding: 4px 8px;
     font-size: 13px;
   }
-  
+
   #filtroImg {
     width: 18px;
     height: 18px;
@@ -247,7 +245,7 @@ container{
     padding: 3px 6px;
     font-size: 12px;
   }
-  
+
   #filtroImg {
     width: 16px;
     height: 16px;
@@ -256,7 +254,7 @@ container{
 
 .search-button {
   padding: 5px 15px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -275,7 +273,7 @@ button {
   margin: 5px;
   padding: 10px;
   cursor: pointer;
-  background-color: #E30613;
+  background-color: #e30613;
   color: white;
   border: 2px solid white;
   border-radius: 0px;
@@ -284,7 +282,7 @@ button {
 
 .button {
   padding: 10px 20px;
-  background-color: #4CAF50; /* Cor do botão */
+  background-color: #4caf50; /* Cor do botão */
   color: white;
   border: none;
   border-radius: 5px;
@@ -432,9 +430,13 @@ td[data-report="true"] {
 }
 
 /* Larguras responsivas */
-@media screen and (min-width: 400px) and (max-width:1920px){
-  .table-container { width: 60%; }
-  #logo { width: 220px; }
+@media screen and (min-width: 400px) and (max-width: 1920px) {
+  .table-container {
+    width: 60%;
+  }
+  #logo {
+    width: 220px;
+  }
   #numpad {
     width: 18%;
     top: 60vh;
@@ -447,7 +449,9 @@ td[data-report="true"] {
     font-size: 17px;
     padding: 8px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 160px;
     height: 40px;
     font-size: 13px;
@@ -455,10 +459,18 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 1366px) {
-  .table-container { width: 55%; }
-  #logo { width: 200px; }
-  #content-top { height: 100px; }
-  .table-container { top: 138px; }
+  .table-container {
+    width: 55%;
+  }
+  #logo {
+    width: 200px;
+  }
+  #content-top {
+    height: 100px;
+  }
+  .table-container {
+    top: 138px;
+  }
   #numpad {
     width: 16%;
     top: 58vh;
@@ -471,7 +483,9 @@ td[data-report="true"] {
     font-size: 16px;
     padding: 7px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 140px;
     height: 35px;
     font-size: 12px;
@@ -479,19 +493,25 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 1024px) {
-  .table-container { width: 60%; }
-  #logo { width: 180px; }
-  #logo{
+  .table-container {
+    width: 60%;
+  }
+  #logo {
+    width: 180px;
+  }
+  #logo {
     width: 20%;
   }
-  #content-top { 
+  #content-top {
     height: 90px;
     padding: 12px;
   }
-  #header{
+  #header {
     font-size: 20px;
   }
-  .table-container { top: 128px; }
+  .table-container {
+    top: 128px;
+  }
   #numpad {
     width: 20%;
     top: 56vh;
@@ -505,7 +525,9 @@ td[data-report="true"] {
     padding: 6px;
     margin: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 110px;
     height: 32px;
     font-size: 11px;
@@ -514,24 +536,30 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 800px) {
-  .table-container { width: 65%; }
-  #logo { width: 150px; }
-  #content-top { 
+  .table-container {
+    width: 65%;
+  }
+  #logo {
+    width: 150px;
+  }
+  #content-top {
     height: 80px;
     padding: 10px;
   }
   #header {
     font-size: 21px; /* Reduzir o tamanho da fonte do header */
-  .table-container { top: 118px; }
+    .table-container {
+      top: 118px;
+    }
   }
   #logo {
     width: 20%; /* Reduzir ainda mais a largura do logo */
     height: auto;
-}
-  #date{
+  }
+  #date {
     display: none;
   }
-  #clock{
+  #clock {
     display: none;
   }
   #numpad {
@@ -547,7 +575,9 @@ td[data-report="true"] {
     padding: 8px;
     margin: 3px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 90px;
     height: 28px;
     font-size: 10px;
@@ -556,52 +586,50 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 600px) {
-    /* Ocultar os cabeçalhos */
-    #thcolor:nth-child(4), /* Vídeo */
+  /* Ocultar os cabeçalhos */
+  #thcolor:nth-child(4), /* Vídeo */
     #thcolor:nth-child(5), /* Report */
     #thcolor:nth-child(6),  /* N.F.A. */
     #thcolor:nth-child(7)  /* N.F.A. */
-    /*#thcolor:nth-child(9)  /* N.F.A. */
+    /*#thcolor:nth-child(9)  /* N.F.A. */ {
+    display: none; /* Oculta os cabeçalhos */
+  }
 
-    {
-        display: none; /* Oculta os cabeçalhos */
-    }
-
-    /* Ocultar as células correspondentes nas linhas */
-    #tabela td:nth-child(4), /* Células da coluna Vídeo */
+  /* Ocultar as células correspondentes nas linhas */
+  #tabela td:nth-child(4), /* Células da coluna Vídeo */
     #tabela td:nth-child(5), /* Células da coluna Report */
     #tabela td:nth-child(6),  /* Células da coluna N.F.A. */
     #tabela td:nth-child(7)  /* Células da coluna N.F.A. */
-    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */     
-     
-    {
-        display: none; /* Oculta as células */
-    }
-    .nfa-column,
-    #tabela .nfa-column{
-      display: none;
-    }.edit-column,
-      #tabela .edit-column{
-        display: table-cell;
-    }
-    #tdlg{
-      display: table-cell;
-    }
-
-    .table-container{
-      width: 100%;
-      max-width: 450px;
-      overflow-y: auto;
-    }
-    #tabela{
-      width: 100%;
-      overflow-y: auto;
+    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */ {
+    display: none; /* Oculta as células */
   }
-  #content-top { 
+  .nfa-column,
+  #tabela .nfa-column {
+    display: none;
+  }
+  .edit-column,
+  #tabela .edit-column {
+    display: table-cell;
+  }
+  #tdlg {
+    display: table-cell;
+  }
+
+  .table-container {
+    width: 100%;
+    max-width: 450px;
+    overflow-y: auto;
+  }
+  #tabela {
+    width: 100%;
+    overflow-y: auto;
+  }
+  #content-top {
     height: 70px;
     padding: 8px;
   }
-  #tabela th, #tabela td {
+  #tabela th,
+  #tabela td {
     padding: 6px;
     font-size: 0.9em;
   }
@@ -621,7 +649,9 @@ td[data-report="true"] {
     margin: 2px;
     border-width: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 75px;
     height: 25px;
     font-size: 9px;
@@ -630,7 +660,7 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 480px) {
-  .table-container { 
+  .table-container {
     width: 75%;
   }
   #numpad {
@@ -647,7 +677,9 @@ td[data-report="true"] {
     margin: 2px;
     border-width: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 65px;
     height: 22px;
     font-size: 8px;
@@ -656,73 +688,68 @@ td[data-report="true"] {
 }
 
 @media screen and (max-width: 600px) {
-    /* Ocultar os cabeçalhos */
-    /*#thcolor:nth-child(4), /* Vídeo */
-    #thcolor:nth-child(5), /* Report */
+  /* Ocultar os cabeçalhos */
+  /*#thcolor:nth-child(4), /* Vídeo */
+  #thcolor:nth-child(5), /* Report */
     #thcolor:nth-child(6),  /* N.F.A. */
     #thcolor:nth-child(7)  /* N.F.A. */
-    /*#thcolor:nth-child(9)  /* N.F.A. */
+    /*#thcolor:nth-child(9)  /* N.F.A. */ {
+    display: none; /* Oculta os cabeçalhos */
+  }
 
-    {
-        display: none; /* Oculta os cabeçalhos */
-    }
-
-    /* Ocultar as células correspondentes nas linhas */
-    /*#tabela td:nth-child(4), /* Células da coluna Vídeo */
-    #tabela td:nth-child(5), /* Células da coluna Report */
+  /* Ocultar as células correspondentes nas linhas */
+  /*#tabela td:nth-child(4), /* Células da coluna Vídeo */
+  #tabela td:nth-child(5), /* Células da coluna Report */
     #tabela td:nth-child(6),  /* Células da coluna N.F.A. */
     #tabela td:nth-child(7)  /* Células da coluna N.F.A. */
-    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */     
-     
-    {
-        display: none; /* Oculta as células */
-    }
-    .nfa-column,
-    #tabela .nfa-column{
-      display: none;
-    }.edit-column,
-      #tabela .edit-column{
-        display: none;
-    }
-    #tdlg{
-      display: table-cell;
-    }
+    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */ {
+    display: none; /* Oculta as células */
+  }
+  .nfa-column,
+  #tabela .nfa-column {
+    display: none;
+  }
+  .edit-column,
+  #tabela .edit-column {
+    display: none;
+  }
+  #tdlg {
+    display: table-cell;
+  }
 
   #logo {
     width: 25%; /* Reduzir ainda mais a largura do logo */
     height: auto;
-}
+  }
   #header {
     font-size: 11px; /* Reduzir o tamanho da fonte do header */
-}
+  }
   #clock-date-container {
     font-size: 9px; /* Reduzir o tamanho da fonte do clock-date */
-}
-  #pesquisa{
-  width: 25%;
-  display: none;
-}
-  #searchCorrida{
+  }
+  #pesquisa {
+    width: 25%;
+    display: none;
+  }
+  #searchCorrida {
     display: none;
   }
   #filtroImg {
-  display: none;
-}
+    display: none;
+  }
   #numpad {
     display: none;
   }
   #clock-date-container {
     display: none;
   }
-  #date{
+  #date {
     display: none;
   }
-  #extraButtons{
+  #extraButtons {
     display: none;
   }
-
 }
-
 
 /* Cores das linhas */
 #tabela tbody tr:nth-child(even) {
@@ -767,7 +794,7 @@ tr.selected {
 }
 
 tr.highlight {
-  background-color: #87CEEB;
+  background-color: #87ceeb;
 }
 
 /* Prioridade */
@@ -776,7 +803,7 @@ tr.highlight {
     background-color: #f0f0f0; /* Define o ponto final da cor */
     color: black;
   }
-  
+
   100% {
     background-color: orangered; /* Define o ponto inicial da cor */
     color: black;
@@ -838,36 +865,32 @@ tr.highlight {
 }
 
 @media (max-width: 768px) {
-    /* Ocultar os cabeçalhos */
-    #thcolor:nth-child(4), /* Vídeo */
+  /* Ocultar os cabeçalhos */
+  #thcolor:nth-child(4), /* Vídeo */
     #thcolor:nth-child(5), /* Report */
     #thcolor:nth-child(6),  /* N.F.A. */
-    #thcolor:nth-child(7)  /* N.F.A. */
-   
+    #thcolor:nth-child(7)  /* N.F.A. */ {
+    display: none; /* Oculta os cabeçalhos */
+  }
 
-    {
-        display: none; /* Oculta os cabeçalhos */
-    }
-
-    /* Ocultar as células correspondentes nas linhas */
-    #tabela td:nth-child(4), /* Células da coluna Vídeo */
+  /* Ocultar as células correspondentes nas linhas */
+  #tabela td:nth-child(4), /* Células da coluna Vídeo */
     #tabela td:nth-child(5), /* Células da coluna Report */
     #tabela td:nth-child(6),  /* Células da coluna N.F.A. */
-    #tabela td:nth-child(7)  /* Células da coluna N.F.A. */
-     
-    {
-        display: none; /* Oculta as células */
-    }
-    .nfa-column,
-    #tabela .nfa-column{
-      display: none;
-    }.edit-column,
-      #tabela .edit-column{
-        display: table-cell;
-    }
-    #tdlg{
-      display: table-cell;
-    }
+    #tabela td:nth-child(7)  /* Células da coluna N.F.A. */ {
+    display: none; /* Oculta as células */
+  }
+  .nfa-column,
+  #tabela .nfa-column {
+    display: none;
+  }
+  .edit-column,
+  #tabela .edit-column {
+    display: table-cell;
+  }
+  #tdlg {
+    display: table-cell;
+  }
   #clock-date-container {
     right: 10px;
   }
@@ -877,7 +900,7 @@ tr.highlight {
   #date {
     font-size: 10px;
   }
-  #horainput{
+  #horainput {
     width: 300px;
     height: 40px;
     font-size: 15px;
@@ -911,7 +934,7 @@ tr.highlight {
     top: 80px;
     z-index: 999;
   }
-  
+
   #rodaDentada {
     width: 25px;
     height: 25px;
@@ -930,7 +953,7 @@ tr.highlight {
     left: 15px;
     top: 70px;
   }
-  
+
   #rodaDentada {
     width: 20px;
     height: 20px;
@@ -977,18 +1000,18 @@ tr.highlight {
 }
 
 /* Icon roda dentada*/
-#rodaDentadaDiv{
-  display:flex;
+#rodaDentadaDiv {
+  display: flex;
   justify-content: flex-end;
-  filter:invert();
+  filter: invert();
 }
 
-#rodaDentada:hover{
+#rodaDentada:hover {
   cursor: pointer;
   animation: spin 2s linear infinite;
 }
 
-#tableRodaDentada{
+#tableRodaDentada {
   margin-top: 0;
 }
 
@@ -1006,8 +1029,7 @@ tr.highlight {
   height: auto; /* Altura automática */
   z-index: 1; /* Fica na frente */
   overflow: auto; /* Habilita rolagem se necessário */
-  }
-
+}
 
 .popup-content {
   background-color: #fefefe;
@@ -1085,7 +1107,10 @@ tr.highlight {
 
 /* Media queries para popups responsivos */
 @media screen and (min-width: 1367px) {
-  #popupConfiguracoes, #popupFiltros, #popupAdicionaObservações, #popupSelecao {
+  #popupConfiguracoes,
+  #popupFiltros,
+  #popupAdicionaObservações,
+  #popupSelecao {
     width: 82.3%;
   }
   #popupNumpad {
@@ -1094,7 +1119,10 @@ tr.highlight {
 }
 
 @media screen and (max-width: 1366px) {
-  #popupConfiguracoes, #popupFiltros, #popupAdicionaObservações, #popupSelecao {
+  #popupConfiguracoes,
+  #popupFiltros,
+  #popupAdicionaObservações,
+  #popupSelecao {
     width: 96.1%;
   }
   #popupNumpad {
@@ -1103,7 +1131,10 @@ tr.highlight {
 }
 
 @media screen and (max-width: 1024px) {
-  #popupConfiguracoes, #popupFiltros, #popupAdicionaObservações, #popupSelecao {
+  #popupConfiguracoes,
+  #popupFiltros,
+  #popupAdicionaObservações,
+  #popupSelecao {
     width: 109.8%;
   }
   #popupNumpad {
@@ -1112,7 +1143,10 @@ tr.highlight {
 }
 
 @media screen and (max-width: 800px) {
-  #popupConfiguracoes, #popupFiltros, #popupAdicionaObservações, #popupSelecao {
+  #popupConfiguracoes,
+  #popupFiltros,
+  #popupAdicionaObservações,
+  #popupSelecao {
     width: 137.2%;
   }
   #popupNumpad {
@@ -1179,44 +1213,39 @@ tr.highlight {
 }
 
 @media screen and (max-width: 600px) {
-    /* Ocultar os cabeçalhos */
-    #thcolor:nth-child(4), /* Vídeo */
+  /* Ocultar os cabeçalhos */
+  #thcolor:nth-child(4), /* Vídeo */
     #thcolor:nth-child(5), /* Report */
     #thcolor:nth-child(6),  /* N.F.A. */
     #thcolor:nth-child(7)  /* N.F.A. */
-    /*#thcolor:nth-child(9)  /* N.F.A. */
+    /*#thcolor:nth-child(9)  /* N.F.A. */ {
+    display: none; /* Oculta os cabeçalhos */
+  }
 
-    {
-        display: none; /* Oculta os cabeçalhos */
-    }
-
-    /* Ocultar as células correspondentes nas linhas */
-    #tabela td:nth-child(4), /* Células da coluna Vídeo */
+  /* Ocultar as células correspondentes nas linhas */
+  #tabela td:nth-child(4), /* Células da coluna Vídeo */
     #tabela td:nth-child(5), /* Células da coluna Report */
     #tabela td:nth-child(6),  /* Células da coluna N.F.A. */
     #tabela td:nth-child(7)  /* Células da coluna N.F.A. */
-    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */     
-     
-    {
-        display: none; /* Oculta as células */
-    }
-    .nfa-column,
-    #tabela .nfa-column{
-      display: none;
-    }.edit-column,
-      #tabela .edit-column{
-        display: none;
-    }
-    #tdlg{
-      display: none;
-    }
-  
+    /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */ {
+    display: none; /* Oculta as células */
+  }
+  .nfa-column,
+  #tabela .nfa-column {
+    display: none;
+  }
+  .edit-column,
+  #tabela .edit-column {
+    display: none;
+  }
+  #tdlg {
+    display: none;
+  }
 
   #popupSelecao .popup-content {
     width: 70%;
     margin: 30% auto;
     padding: 15px;
-  
   }
   #popupSelecao button {
     padding: 8px;
@@ -1266,18 +1295,18 @@ tr.highlight {
 
 /* Race status colors */
 .status-start {
-    background-color: #4CAF50 !important; /* Green */
-    color: white !important;
+  background-color: #4caf50 !important; /* Green */
+  color: white !important;
 }
 
 .status-slow {
-    background-color: #d6ff07 !important; /* Yellow */
-    color: black !important;
+  background-color: #d6ff07 !important; /* Yellow */
+  color: black !important;
 }
 
 .status-redflag {
-    background-color: #FF0000 !important; /* Red */
-    color: white !important;
+  background-color: #ff0000 !important; /* Red */
+  color: white !important;
 }
 
 /* Race status styles */
@@ -1296,7 +1325,7 @@ tr.post-slow td {
 }
 
 tr.post-redflag td {
-  background-color: #E30613; /* Red */
+  background-color: #e30613; /* Red */
   color: white;
 }
 
@@ -1324,18 +1353,18 @@ input[type="checkbox"] {
   /* Posicionando o texto ao lado da checkbox */
   vertical-align: center;
   margin-right: 5px; /* Espaço entre a checkbox e o texto */
-  }
-  
-  /* Estilizando a marcação quando a checkbox está marcada */
-  input[type="checkbox"]:checked::before {
+}
+
+/* Estilizando a marcação quando a checkbox está marcada */
+input[type="checkbox"]:checked::before {
   /* Adicionando um visto vermelho */
   content: "\2713"; /* Código unicode para visto */
   color: red; /* Cor do visto */
   font-size: 25px; /* Tamanho do visto */
   line-height: 20px;
-  }
+}
 
-  /*chebox popup de edição*/
+/*chebox popup de edição*/
 .checkbox-group {
   display: flex; /* Alinha todos os checkboxes horizontalmente */
   justify-content: center; /* Centraliza os checkboxes no contêiner */
@@ -1357,7 +1386,7 @@ input[type="checkbox"] {
 }
 
 /* Numpad styles */
-#numpad{
+#numpad {
   position: fixed;
   top: 60vh;
   transform: translateY(-50%);
@@ -1366,49 +1395,49 @@ input[type="checkbox"] {
   text-align: center;
 }
 
-#botao-numpad-voltar{
+#botao-numpad-voltar {
   margin-bottom: 0px;
 }
 
-#numpad-table{
+#numpad-table {
   padding-top: 1vh;
   padding-bottom: 1vh;
   margin-top: 0px;
   border-collapse: separate;
   border-spacing: 0px;
   border-radius: 0px;
-  background-color: #E30613;
+  background-color: #e30613;
   margin-right: 0px;
   width: 18vw;
-  right:0;
+  right: 0;
 }
 
-.numpad-header{
+.numpad-header {
   font-size: 20px;
   border: none;
   background: transparent;
-  color:white;
+  color: white;
   border-bottom: white;
 }
 
-.numpad-cell{
-  all:unset;
+.numpad-cell {
+  all: unset;
   vertical-align: middle;
 }
 
-.numpad-row{
+.numpad-row {
   min-width: none;
-  text-align: center;  
-  background-color: #E30613;
+  text-align: center;
+  background-color: #e30613;
   background: transparent;
 }
 
-.numpad-Button{
+.numpad-Button {
   width: 8vw;
   margin: 3px;
   padding: 12px;
   cursor: pointer;
-  background-color: #E30613;
+  background-color: #e30613;
   color: white;
   border: 2px solid white;
   border-radius: 0px;
@@ -1416,28 +1445,29 @@ input[type="checkbox"] {
   font-size: 20px;
 }
 
-#popupNumpad.popup{
+#popupNumpad.popup {
   z-index: 10002;
 }
 
-#popupNumpadTable,#popupNumpadTable td{
+#popupNumpadTable,
+#popupNumpadTable td {
   background: transparent;
-  border:none;
+  border: none;
 }
 
-.primary-numpad-Button{
+.primary-numpad-Button {
   width: 5vw;
   height: 5vh;
 }
 
-#numpad-password{
+#numpad-password {
   margin-top: 0;
   width: 15%;
   position: fixed;
   z-index: 10001;
 }
 
-#raceStart{
+#raceStart {
   width: 250px;
   height: 60px;
   vertical-align: middle;
@@ -1450,11 +1480,11 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
-#raceRF{
+#raceRF {
   width: 250px;
   height: 60px;
   vertical-align: middle;
-  background-color: #E30613;
+  background-color: #e30613;
   border: none;
   padding: 10px;
   margin: 5px;
@@ -1463,7 +1493,7 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
-#raceSF{
+#raceSF {
   width: 250px;
   height: 60px;
   vertical-align: middle;
@@ -1480,7 +1510,7 @@ input[type="checkbox"] {
   width: 25%;
   position: fixed;
   top: 50vh;
-  transform: translateY(-20%);   /* Subir ou descer botões*/
+  transform: translateY(-20%); /* Subir ou descer botões*/
   left: 0vw;
   text-align: left;
   margin-left: 4vw;
@@ -1507,7 +1537,7 @@ input[type="checkbox"] {
 }
 
 #btnRed {
-  background-color: #E30613;
+  background-color: #e30613;
   color: white;
   border: none;
   padding: 10px;
@@ -1521,49 +1551,49 @@ input[type="checkbox"] {
   z-index: 10001;
 }
 
-#popupConfiguracoes table{
+#popupConfiguracoes table {
   width: 100%;
 }
 
-#popupConfiguracoes td{
-  border:none;
+#popupConfiguracoes td {
+  border: none;
   text-align: left;
 }
 
-#popupConfiguracoes button{
+#popupConfiguracoes button {
   font-size: 20px;
   margin-bottom: 20px;
 }
 
-#filtroImg{
-  content:url(/images/pesquisa.png);
-  width:7%;
+#filtroImg {
+  content: url(/images/pesquisa.png);
+  width: 7%;
   cursor: pointer;
-  vertical-align:bottom;
+  vertical-align: bottom;
 }
 
-#filtroImg:hover{
-  content:url(/images/pesquisaGif.png);
+#filtroImg:hover {
+  content: url(/images/pesquisaGif.png);
 }
 
-#filtroImgtd{
+#filtroImgtd {
   width: 10%;
 }
 
-#popupFiltros{
+#popupFiltros {
   z-index: 10000;
 }
 
-#popupFiltros p{
+#popupFiltros p {
   font-size: 14px;
   color: black;
 }
 
-#popupFiltros button{
+#popupFiltros button {
   margin-left: 40px;
 }
 
-#popupAdicionaObservações{
+#popupAdicionaObservações {
   z-index: 10006;
 }
 
@@ -1574,10 +1604,11 @@ input[type="checkbox"] {
   display: none !important;
 }
 
-
 /* Media queries para responsividade dos botões */
 @media screen and (max-width: 1366px) {
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 200px;
     height: 50px;
     font-size: 14px;
@@ -1588,7 +1619,9 @@ input[type="checkbox"] {
 }
 
 @media screen and (max-width: 1024px) {
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 180px;
     height: 45px;
     font-size: 13px;
@@ -1599,7 +1632,9 @@ input[type="checkbox"] {
 }
 
 @media screen and (max-width: 800px) {
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 160px;
     height: 40px;
     font-size: 12px;
@@ -1623,7 +1658,9 @@ input[type="checkbox"] {
     font-size: 18px;
     padding: 10px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 220px;
     height: 55px;
     font-size: 15px;
@@ -1643,7 +1680,9 @@ input[type="checkbox"] {
     font-size: 16px;
     padding: 8px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 180px;
     height: 45px;
     font-size: 13px;
@@ -1664,7 +1703,9 @@ input[type="checkbox"] {
     padding: 6px;
     margin: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 150px;
     height: 40px;
     font-size: 12px;
@@ -1686,7 +1727,9 @@ input[type="checkbox"] {
     padding: 8px;
     margin: 3px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 90px;
     height: 28px;
     font-size: 10px;
@@ -1695,38 +1738,34 @@ input[type="checkbox"] {
 }
 
 @media screen and (max-width: 600px) {
-      /* Ocultar os cabeçalhos */
-      #thcolor:nth-child(4), /* Vídeo */
+  /* Ocultar os cabeçalhos */
+  #thcolor:nth-child(4), /* Vídeo */
       #thcolor:nth-child(5), /* Report */
       #thcolor:nth-child(6),  /* N.F.A. */
       #thcolor:nth-child(7)  /* N.F.A. */
-      /*#thcolor:nth-child(9)  /* N.F.A. */
+      /*#thcolor:nth-child(9)  /* N.F.A. */ {
+    display: none; /* Oculta os cabeçalhos */
+  }
 
-      {
-          display: none; /* Oculta os cabeçalhos */
-      }
-  
-      /* Ocultar as células correspondentes nas linhas */
-      #tabela td:nth-child(4), /* Células da coluna Vídeo */
+  /* Ocultar as células correspondentes nas linhas */
+  #tabela td:nth-child(4), /* Células da coluna Vídeo */
       #tabela td:nth-child(5), /* Células da coluna Report */
       #tabela td:nth-child(6), /* Células da coluna N.F.A. */
       #tabela td:nth-child(7)  /* Células da coluna N.F.A. */
-      /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */
-
-      {
-          display: none; /* Oculta as células */
-      }
-      .nfa-column,
-      #tabela .nfa-column{
-        display: none;
-      }
-      .edit-column,
-        #tabela .edit-column{
-          display: table-cell;
-        }
-      #tdlg{
-        display: table-cell;
-      }
+      /*#tabela td:nth-child(9)  /* Células da coluna N.F.A. */ {
+    display: none; /* Oculta as células */
+  }
+  .nfa-column,
+  #tabela .nfa-column {
+    display: none;
+  }
+  .edit-column,
+  #tabela .edit-column {
+    display: table-cell;
+  }
+  #tdlg {
+    display: table-cell;
+  }
   #numpad {
     width: 18%;
     top: 52vh;
@@ -1743,18 +1782,20 @@ input[type="checkbox"] {
     margin: 2px;
     border-width: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 75px;
     height: 25px;
     font-size: 9px;
     padding: 4px;
   }
-  #popupNumpadTable{
+  #popupNumpadTable {
     width: 100%;
-    }
-  #popupNumpadTable td{
-    padding:10px;
-    font-size:14px;
+  }
+  #popupNumpadTable td {
+    padding: 10px;
+    font-size: 14px;
   }
 }
 
@@ -1773,7 +1814,9 @@ input[type="checkbox"] {
     margin: 2px;
     border-width: 2px;
   }
-  #raceStart, #raceRF, #raceSF {
+  #raceStart,
+  #raceRF,
+  #raceSF {
     width: 65px;
     height: 22px;
     font-size: 8px;
@@ -1793,7 +1836,8 @@ input[type="checkbox"] {
   }
 }
 
-#tabela th, #tabela td {
+#tabela th,
+#tabela td {
   border: 1px solid #ddd;
   text-align: center; /* Centraliza texto e ícones */
   padding-top: 20px;
@@ -1803,7 +1847,8 @@ input[type="checkbox"] {
   text-align: left; /* Mantém texto da coluna de observações à esquerda */
 }
 
-#obsInputSelect, #obsInputSelect2 {
+#obsInputSelect,
+#obsInputSelect2 {
   display: block; /* Garante que a dropdown ocupe toda a largura */
   margin-top: -20px; /* Espaçamento acima da dropdown */
   position: relative; /* Para garantir que a posição seja relativa ao contêiner */
@@ -1813,30 +1858,33 @@ input[type="checkbox"] {
 /*checkbox popup de edição*/
 /* Ajustando o CSS para alinhar os campos de entrada e rótulos horizontalmente usando Flexbox */
 .input-group-container {
-    display: flex; /* Alinha todos os grupos de input horizontalmente */
-    justify-content: space-between; /* Espaçamento igual entre os grupos */
-    margin-bottom: 20px; /* Espaçamento entre linhas de input */
+  display: flex; /* Alinha todos os grupos de input horizontalmente */
+  justify-content: space-between; /* Espaçamento igual entre os grupos */
+  margin-bottom: 20px; /* Espaçamento entre linhas de input */
 }
 
 .input-group {
-    display: flex;
-    flex-direction: column; /* Rótulo em cima do input */
-    align-items: center; /* Centraliza o conteúdo do input */
-    flex: 1; /* Permite que todos os inputs ocupem espaço igual */
-    margin: 0 5px; /* Espaçamento lateral entre os grupos */
+  display: flex;
+  flex-direction: column; /* Rótulo em cima do input */
+  align-items: center; /* Centraliza o conteúdo do input */
+  flex: 1; /* Permite que todos os inputs ocupem espaço igual */
+  margin: 0 5px; /* Espaçamento lateral entre os grupos */
 }
 
 .input-group input {
-    padding: 8px; /* Aumentando o padding interno */
-    width: 100%; /* Ajustando a largura para ocupar todo o espaço disponível */
-    box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+  padding: 8px; /* Aumentando o padding interno */
+  width: 100%; /* Ajustando a largura para ocupar todo o espaço disponível */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
 }
 
 .checkbox-group {
   margin-bottom: 15px; /* Aumentando o espaçamento entre os checkboxes */
 }
 
-/*.popup button*/ .popup input, .popup select, .popup textarea {
+/*.popup button*/
+.popup input,
+.popup select,
+.popup textarea {
   font-size: 16px; /* Ajustar o tamanho da fonte para todos os itens do popup */
   padding: 12px; /* Ajustar o padding para botões, inputs, selects e textarea */
   text-align: center;
@@ -1854,7 +1902,7 @@ input[type="checkbox"] {
   margin-top: 20px; /* Adiciona espaço acima dos checkboxes */
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1880,7 +1928,9 @@ input[type="checkbox"]:checked::before {
   inset: 0; /* Centraliza o conteúdo */
 }
 
-#opcaoCamera, #opcaoPost, #opcaoTurn {
+#opcaoCamera,
+#opcaoPost,
+#opcaoTurn {
   width: 100px; /* Largura fixa para os botões */
   height: 100px; /* Altura fixa para os botões */
   border-radius: 0; /* Remover bordas arredondadas para torná-los quadrados */
@@ -1889,7 +1939,9 @@ input[type="checkbox"]:checked::before {
   margin: 0 5px; /* Margem entre os botões */
 }
 
-#button-minus1, #button-minus2, #addReport {
+#button-minus1,
+#button-minus2,
+#addReport {
   width: 100px; /* Largura fixa para todos os botões */
   height: 100px; /* Altura fixa para todos os botões */
   border-radius: 10px; /* Arredondar os vértices dos botões */
@@ -1901,70 +1953,71 @@ input[type="checkbox"]:checked::before {
 #popupNumpadTable input[type="text"],
 #popupNumpadTable input[type="number"],
 #popupNumpadTable select {
-    max-width: 50%; /* Definir uma largura máxima menor para os campos de texto e selects */
-    width: auto; /* Largura responsiva até o máximo definido */
-    padding: 6px; /* Ajustar o padding para um tamanho mais apropriado */
-    font-size: 14px; /* Ajustar o tamanho da fonte */
+  max-width: 50%; /* Definir uma largura máxima menor para os campos de texto e selects */
+  width: auto; /* Largura responsiva até o máximo definido */
+  padding: 6px; /* Ajustar o padding para um tamanho mais apropriado */
+  font-size: 14px; /* Ajustar o tamanho da fonte */
 }
 
 #popupNumpadTable input[type="checkbox"] {
-    display: inline-block; /* Permite que os checkboxes fiquem em linha */
-    margin: 0 5px; /* Margem entre os checkboxes */
-    vertical-align: middle; /* Alinha verticalmente no meio */
-    width: 25px; /* Definir uma largura fixa para os checkboxes */
-    height: 25px; /* Definir uma altura fixa para os checkboxes */
+  display: inline-block; /* Permite que os checkboxes fiquem em linha */
+  margin: 0 5px; /* Margem entre os checkboxes */
+  vertical-align: middle; /* Alinha verticalmente no meio */
+  width: 25px; /* Definir uma largura fixa para os checkboxes */
+  height: 25px; /* Definir uma altura fixa para os checkboxes */
 }
 
 #popupNumpadTable td {
-    text-align: center; /* Centraliza o conteúdo das células da tabela */
+  text-align: center; /* Centraliza o conteúdo das células da tabela */
 }
 
 #popupNumpadTable {
-    margin: 0 auto; /* Centraliza a tabela dentro do popup */
-    text-align: center; /* Centraliza o conteúdo dentro das células da tabela */
+  margin: 0 auto; /* Centraliza a tabela dentro do popup */
+  text-align: center; /* Centraliza o conteúdo dentro das células da tabela */
 }
 
-#popupNumpadTable input[type="text"], #popupNumpadTable select {
-    width: 50%; /* Define a largura dos campos de texto e selects */
-    margin: 10px auto; /* Margem superior/inferior e centraliza horizontalmente */
-    display: block; /* Faz com que cada campo ocupe uma linha completa */
+#popupNumpadTable input[type="text"],
+#popupNumpadTable select {
+  width: 50%; /* Define a largura dos campos de texto e selects */
+  margin: 10px auto; /* Margem superior/inferior e centraliza horizontalmente */
+  display: block; /* Faz com que cada campo ocupe uma linha completa */
 }
 
 #popupNumpadTable input[type="text"] {
-    width: 50%; /* Diminuir a largura das caixas de texto */
-    display: inline-block; /* Permite que as designações fiquem ao lado */
-    margin: 5px 2px; /* Diminuir a margem entre as caixas de texto */
+  width: 50%; /* Diminuir a largura das caixas de texto */
+  display: inline-block; /* Permite que as designações fiquem ao lado */
+  margin: 5px 2px; /* Diminuir a margem entre as caixas de texto */
 }
 
 #popupNumpadTable label {
-    display: inline-block; /* Permite que os rótulos fiquem ao lado das caixas de texto */
-    width: 30%; /* Largura para os rótulos para que fiquem alinhados */
-    text-align: right; /* Alinha o texto à direita para melhor apresentação */
-    margin-right: 2px; /* Diminuir ainda mais a margem à direita dos rótulos para encostar nas caixas de texto */
+  display: inline-block; /* Permite que os rótulos fiquem ao lado das caixas de texto */
+  width: 30%; /* Largura para os rótulos para que fiquem alinhados */
+  text-align: right; /* Alinha o texto à direita para melhor apresentação */
+  margin-right: 2px; /* Diminuir ainda mais a margem à direita dos rótulos para encostar nas caixas de texto */
 }
 
 #popupNumpadTable input[type="text"] {
-    margin: 2px 1px; /* Diminuir ainda mais a margem entre as caixas de texto */
+  margin: 2px 1px; /* Diminuir ainda mais a margem entre as caixas de texto */
 }
 
 #popupNumpadTable textarea {
-    width: 60%; /* Alinhar a largura da caixa de texto de observações com as outras caixas de texto */
-    margin: 2px 1px; /* Manter margem reduzida entre as caixas de texto */
-    display: inline-block; /* Permite que a caixa de texto ocupe a mesma linha que as legendas */
+  width: 60%; /* Alinhar a largura da caixa de texto de observações com as outras caixas de texto */
+  margin: 2px 1px; /* Manter margem reduzida entre as caixas de texto */
+  display: inline-block; /* Permite que a caixa de texto ocupe a mesma linha que as legendas */
 }
 
 #obsInput2 {
-    width: 80%; /* Ajuste a largura conforme necessário */
-    height: 150px; /* Ajuste a altura conforme necessário */
-    margin: 10px auto; /* Centraliza a textarea e adiciona margem em cima e embaixo */
-    display: block; /* Garante que a textarea seja um bloco */
+  width: 80%; /* Ajuste a largura conforme necessário */
+  height: 150px; /* Ajuste a altura conforme necessário */
+  margin: 10px auto; /* Centraliza a textarea e adiciona margem em cima e embaixo */
+  display: block; /* Garante que a textarea seja um bloco */
 }
 
 #obsInput2 {
-    width: 80%; /* Ajuste a largura conforme necessário */
-    height: 150px; /* Ajuste a altura conforme necessário */
-    margin: 10px auto; /* Centraliza a textarea e adiciona margem em cima e embaixo */
-    display: block; /* Garante que a textarea seja um bloco */
+  width: 80%; /* Ajuste a largura conforme necessário */
+  height: 150px; /* Ajuste a altura conforme necessário */
+  margin: 10px auto; /* Centraliza a textarea e adiciona margem em cima e embaixo */
+  display: block; /* Garante que a textarea seja um bloco */
 }
 #searchCorrida {
   color: rgb(0, 0, 0);
@@ -1975,11 +2028,159 @@ input[type="checkbox"]:checked::before {
 #videoCheck,
 #reportCheck,
 #priorityCheck {
-    margin-left: 270px; /* Ajuste o valor conforme necessário */
+  margin-left: 270px; /* Ajuste o valor conforme necessário */
 }
 
-label{
+label {
   display: block;
   text-align: left;
-  
+}
+/* Estilos do Chat */
+#chat-container {
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+  width: 300px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#chat-header {
+  background: #333;
+  color: white;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+#chat-content {
+  display: block;
+}
+
+#chat-messages {
+  display: flex;
+  flex-direction: column; /* Arrange children in a column */
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  background: white;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.message-content {
+  word-wrap: break-word;
+}
+
+#chat-input-area {
+  display: flex;
+  padding: 8px;
+  background: #f5f5f5;
+}
+
+#chat-message-input {
+  flex-grow: 1;
+  padding: 8px;
+  margin-right: 5px;
+}
+
+#chat-recipient-select {
+  width: 100%;
+  height: 20%;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+/* Estado minimizado */
+#chat-container.minimized #chat-content {
+  display: none;
+}
+
+#chat-container.minimized {
+  width: auto;
+}
+
+#chat-container.minimized #chat-header {
+  border-radius: 5px;
+}
+
+.post {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 0 0 0.25rem;
+  margin: 0.5rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.post--left {
+  width: 60%;
+  align-self: flex-start;
+}
+
+.post--right {
+  width: 60%;
+  align-self: flex-end;
+}
+
+.post__header {
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.post__header--user {
+  background-color: blue;
+}
+
+.post__header--reply {
+  background-color: purple;
+}
+
+.post__header--name {
+  font-weight: bold;
+}
+
+.post__header--time {
+  font-size: 0.8rem;
+}
+
+.post__text {
+  margin-top: 5px;
+  color: #333;
+  padding: 0.25rem 0.5rem;
+}
+
+.user-list,
+.room-list,
+.activity {
+  width: 100%;
+  min-height: 1rem;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0.75rem 0.25rem;
+}
+
+.activity {
+  font-style: italic;
 }

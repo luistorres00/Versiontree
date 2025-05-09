@@ -9,9 +9,17 @@
 
 <script src="JSs/script.js"></script>
 <script src="JSs/scriptslogin.js"></script>
-<script src="server.js"></script>
 <script src="JSs/expexcell.js"></script>
 <script src="JSs/tableScroll.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/pwa/service-worker.js')
+        .then(reg => console.log('SW registrado:', reg.scope))
+        .catch(err => console.error('Falha no registro:', err));
+    });
+  }
+  </script>
 
 <body>
 <img id="logo" src="images/unnamed.png" alt="Logo">

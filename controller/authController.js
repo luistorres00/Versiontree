@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/models");
 const { generateToken } = require("../utilities/jwtUtils");
+const { isMongoConnected } = require("../utilities/dbStatus");
 
 const registerUser = async (req, res) => {
   try {
@@ -14,12 +15,14 @@ const registerUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, usertype , password: hashedPassword });
+    const newUser = new User({ username, usertype, password: hashedPassword });
     await newUser.save();
 
     // Gerar o token JWT e enviar como parte da resposta
     generateToken({ username: newUser.username }, (token) => {
-      res.status(201).json({ message: "User registered successfully",usertype, token });
+      res
+        .status(201)
+        .json({ message: "User registered successfully", usertype, token });
     });
   } catch (error) {
     console.error(error);
@@ -72,6 +75,12 @@ async function deleteUser(req, res) {
 
 const loginUser = async (req, res) => {
   try {
+    if (!isMongoConnected()) {
+      console.log("Not connected!");
+      return res
+        .status(503)
+        .json({ message: "Database connection is not active" });
+    }
     const { username, password } = req.body;
 
     // Procura o usuário pelo nome de usuário
@@ -91,7 +100,14 @@ const loginUser = async (req, res) => {
     // Se as credenciais estiverem corretas, gera um token de autenticação
     generateToken({ user }, (token) => {
       console.log("Login válido");
-      res.status(200).json({ message: "User logged successfully",username: user.username, usertype: user.usertype, token });
+      console.log(user._id, user.usertype, user.username);
+      res.status(200).json({
+        message: "User logged successfully",
+        userID: user._id,
+        username: user.username,
+        usertype: user.usertype,
+        token,
+      });
     });
   } catch (error) {
     console.error(error);
@@ -105,10 +121,21 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "User logged out successfully" });
 };
 
+const fetchById = async (userID) => {
+  try {
+    const user = await User.findById(userID); // ensure User is your Mongoose model
+    return user;
+  } catch (error) {
+    console.error("Erro ao buscar usuário:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   registerUser,
   editUser,
   deleteUser,
   loginUser,
   logoutUser,
+  fetchById,
 };

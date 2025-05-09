@@ -3,50 +3,38 @@
   "short_name": "wfr-rc",
   "start_url": "/index.html",
   "display": "standalone",
-  "description": "A description for your application",
-  "lang": "The default language of your application",
-  "dir": "auto",
+  "description": "Aplicativo de telemetria WFR RaceTech",
+  "lang": "pt",
+  "dir": "ltr",
   "theme_color": "#000000",
   "background_color": "#000000",
-  "orientation": "any",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/images/pwa/wfr_rc-72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/images/pwa/wfr_rc-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/images/pwa/wfr_rc-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-  }
-  ],
-  "screenshots": [
-    {
-      "src": "https://www.pwabuilder.com/assets/screenshots/screen1.png",
-      "sizes": "2880x1800",
-      "type": "image/png"
-    }
-  ],
-  "related_applications": [
-    {
-      "platform": "windows"
+      "purpose": "any maskable"
     }
   ],
   "prefer_related_applications": false,
   "shortcuts": [
     {
-      "name": "WFR-RaceTech",
-      "url": "/index.html",
-      "description": "A description of the functionality of this shortcut"
+      "name": "Dashboard",
+      "url": "/index.html?source=shortcut",
+      "description": "Acessar o dashboard principal"
     }
   ]
 }

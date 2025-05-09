@@ -1,43 +1,40 @@
+// Verifica se o Service Worker é suportado e o registra
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
     navigator.serviceWorker
       .register("/pwa/service-worker.js")
       .then(function (registration) {
         console.log(
-          "ServiceWorker registration successful with scope: ",
+          "Service-Worker registration successful with scope: ",
           registration.scope
         );
       })
       .catch(function (err) {
-        console.error("ServiceWorker registration failed: ", err);
+        console.error("Service-Worker registration failed: ", err);
       });
   });
 }
-document.addEventListener("keypress", handlekeypress);
 
+// Evento para lidar com a tecla "Enter" no login
+document.addEventListener("keypress", handleKeyPress);
+
+// Evento para carregar o vídeo inicial
 document.addEventListener("DOMContentLoaded", function () {
   const videoContainer = document.getElementById("videoContainer");
 
   if (videoContainer !== null) {
     try {
-      // Mostrar o contêiner do vídeo por 3 segundos
       videoContainer.style.display = "block";
-
-      // Carregar o vídeo
       const video = document.createElement("video");
       video.src = "images/wfrtrans.mp4";
       video.autoplay = true;
-      video.preload = "metadata"; // Carregar apenas os metadados do vídeo
-
-      // Adicionar o vídeo ao contêiner
+      video.preload = "metadata";
       videoContainer.appendChild(video);
 
-      // Definir temporizador para ocultar o contêiner após 3 segundos
       setTimeout(function () {
         videoContainer.style.display = "none";
-      }, 2500); // Tempo em milissegundos (3 segundos)
+      }, 2500);
     } catch (error) {
-      // Ignorar o erro
       console.error("Erro ao tentar mostrar o contêiner do vídeo:", error);
     }
   } else {
@@ -45,59 +42,104 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//fazer logout
+// Evento para logout
 document.addEventListener("DOMContentLoaded", function () {
   try {
     const logoutButton = document.getElementById("logoutButton");
 
-    logoutButton.addEventListener("click", function () {
-      // Fazer solicitação para logout
-      console.log("1");
-      fetch("http://192.168.1.107:16082/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Inclua o token de autenticação no cabeçalho Authorization
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
-            localStorage.removeItem("responseData");
-            // Redirecionar de volta para a página index.html
-            window.location.href = "index.html";
-          } else {
-            // Se o logout falhar, exiba uma mensagem de erro
-            console.error("Failed to logout");
-          }
+    if (logoutButton) {
+      logoutButton.addEventListener("click", function () {
+        fetch("http://localhost:16082/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    });
+          .then((response) => {
+            if (response.ok) {
+              localStorage.removeItem("responseData");
+              window.location.href = "index.html";
+            } else {
+              console.error("Failed to logout");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    }
   } catch (error) {
-    console.error("Botao nao disponivel.");
+    console.error("Botão não disponível.");
   }
 });
 
-// Verifica se a PWA já foi instalada
+// Variável global para instalação da PWA
 let deferredPrompt;
+
+// Evento para instalação da PWA
 window.addEventListener("beforeinstallprompt", (e) => {
-  // Previne o comportamento padrão do browser
   e.preventDefault();
-  // Armazena o evento para ser usado mais tarde
   deferredPrompt = e;
-  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
   showInstallPrompt();
 });
 
-function handlekeypress(event) {
+// Função para mostrar prompt de instalação
+function showInstallPrompt() {
+  const installButton = document.getElementById("logo");
+  if (installButton) {
+    installButton.addEventListener("click", () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("Usuário aceitou a instalação da PWA");
+        } else {
+          console.log("Usuário recusou a instalação da PWA");
+        }
+        deferredPrompt = null;
+      });
+    });
+  }
+}
+
+// Botão flutuante para instalação manual
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installBtn = document.createElement("button");
+  installBtn.id = "installPWA";
+  installBtn.textContent = "📲 Instalar App";
+  installBtn.style = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    padding: 10px 15px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  `;
+  document.body.appendChild(installBtn);
+
+  installBtn.onclick = () => {
+    e.prompt();
+    e.userChoice.then(() => {
+      installBtn.remove();
+    });
+  };
+});
+
+// Função para lidar com a tecla "Enter"
+function handleKeyPress(event) {
   if (event.key === "Enter") {
     login();
   }
 }
 
+// Função de login
 function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -106,8 +148,7 @@ function login() {
     password: password,
   };
 
-  // Enviar solicitação HTTP para validar o login
-  fetch("http://192.168.1.107:16082/auth/login", {
+  fetch("http://localhost:16082/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -122,77 +163,46 @@ function login() {
       }
     })
     .then((responseData) => {
-      // Log da resposta recebida para a console
       console.log("Response:", responseData);
-
-      // Salvar responseData no localStorage
       localStorage.setItem("responseData", JSON.stringify(responseData));
-
-      // Reproduzir o vídeo e redirecionar após o término do vídeo
       playVideoAndRedirect(responseData);
     })
     .catch((error) => {
-      // Se o login falhar, exiba uma mensagem de erro para o usuário
       console.error("Error:", error);
       alert("Login failed");
     });
 }
 
+// Função para reproduzir vídeo e redirecionar
 function playVideoAndRedirect(data) {
-  // Se o login for bem-sucedido, reproduza o vídeo e redirecione para outra página após 4 segundos
   const videoContainer = document.getElementById("videoContainer");
   const video = document.createElement("video");
   video.src = "images/wfrpausa.mp4";
   video.autoplay = true;
-  video.preload = "metadata"; // Carrega apenas metadados do vídeo para obter dimensões
+  video.preload = "metadata";
 
-  // Exibindo o contêiner do vídeo e adicionando o vídeo ao DOM
   videoContainer.style.display = "block";
   videoContainer.appendChild(video);
 
-  // Definindo o evento 'ended' para lidar com o término do vídeo
   video.addEventListener("ended", function () {
     console.log("Vídeo terminado!");
     checkUserTypeAndRedirect();
   });
 
-  // Função para verificar o tipo de usuário e redirecionar
   function checkUserTypeAndRedirect() {
     const responseData = JSON.parse(localStorage.getItem("responseData"));
-    if (
-      (responseData && responseData.usertype === "admin") ||
-      (responseData && responseData.usertype === "operator")
-    ) {
-      // Redireciona para a página de administração se o usuário for admin
-      window.location.href = "/admin.html";
-    } else {
-      // Redireciona para a página de cliente se o usuário não for admin
-      window.location.href = "/cliente.html";
+    if (responseData) {
+      if (
+        responseData.usertype === "admin" ||
+        responseData.usertype === "operator"
+      ) {
+        window.location.href = "/admin.html";
+      } else {
+        window.location.href = "/cliente.html";
+      }
     }
   }
 
-  // Definir temporizador para verificar responseData após 5 segundos
   setTimeout(checkUserTypeAndRedirect, 5000);
-
-  // Executar o vídeo
   video.play();
-}
-
-function showInstallPrompt() {
-  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
-  const installButton = document.getElementById("logo");
-  installButton.addEventListener("click", () => {
-    // Exibe o prompt de instalação
-    deferredPrompt.prompt();
-    // Aguarda o usuário interagir com o prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("Usuário aceitou a instalação da PWA");
-      } else {
-        console.log("Usuário recusou a instalação da PWA");
-      }
-      // Limpa o objeto deferredPrompt para que o prompt não seja mostrado novamente
-      deferredPrompt = null;
-    });
-  });
 }

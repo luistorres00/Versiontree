@@ -4,14 +4,30 @@
 <link rel="manifest" href="pwa/manifest.json" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Socket IO-->
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
+      integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
 <script src="JSs/exceljs.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/express"></script>
 
 <script src="JSs/script.js"></script>
 <script src="JSs/scriptslogin.js"></script>
-<script src="server.js"></script>
 <script src="JSs/expexcell.js"></script>
 <script src="JSs/tableScroll.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/pwa/service-worker.js')
+        .then(reg => console.log('SW registrado:', reg.scope))
+        .catch(err => console.error('Falha no registro:', err));
+    });
+  }
+  </script>
 
 <body>
 <img id="logo" src="images/unnamed.png" alt="Logo">
@@ -310,6 +326,10 @@
         <td>
           <button onclick="inputRace()">Insert Race Name</button>
         </td>
+        <td>
+          <button id="restricaoTempo" onclick="restricaoTempoToggle()">Ativar Restrição Tempo</button>
+          <input type="number" placeholder="Tempo(mins)" id="restricaoTempoValue"> min.
+        </td>
       </tr>
       <tr>
         <td colspan="2">
@@ -356,6 +376,27 @@
     </table>
     <button onclick="fecharPopupFiltros();pesquisarCorrida();resetCorridas()">Confirm</button>
   </div>
+  <!-- Chat Container -->
+</div>
+<div id="chat-container">
+  <div id="chat-header">
+    <span>Chat</span>
+    <button id="chat-toggle">-</button>
+  </div>
+  <div id="chat-content">
+    <div id="chat-messages"></div>
+    <p class="user-list"></p>
+    <p class="activity"></p>
+    <div id="chat-input-area">
+      <select id="chat-recipient-select">
+        <option value="all">Todos os usuários</option>
+      </select>
+      <form id="chat-form">
+        <input type="text" id="chat-message-input" placeholder="Digite sua mensagem...">
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+    </div>
 </div>
                 
 </body>
