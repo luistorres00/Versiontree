@@ -22,11 +22,15 @@ let campoPesquisa = false;
 let campoChat = false;
 
 //Variáveis de configuração (Settings)
-let defaultSettingsBody = {
-  timeRestriction: true,
-};
+
 let timeRestriction = true;
 let timeRestrictionValue = 20;
+
+// Caso não existam registos de settings na base de dados
+let defaultSettingsBody = {
+  timeRestriction: true,
+  timeRestrictionValue: 20,
+};
 
 //Declarado URL's
 const url = "http://localhost:16082/";
@@ -40,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://localhost:5500/index.html";
+    window.location.href = "http://localhost:16082";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -686,7 +690,14 @@ function atualizarSettings(currentSettings, currentValue) {
   // Verifica se há dados no localStorage
   if (currentSettings) {
     const updatedSettings = JSON.parse(currentSettings);
+    const restricaoTempoValue = document.getElementById(
+      "restricaoTempoValue"
+    ).value;
     updatedSettings.timeRestriction = currentValue;
+    Object.defineProperty(updatedSettings, "timeRestrictionValue", {
+      value: restricaoTempoValue ? restricaoTempoValue : 20,
+    });
+    console.log("UPDATED SETTINGS", updatedSettings);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     // Definir o IP/URL para onde enviar os dados
@@ -720,21 +731,22 @@ function atualizarSettings(currentSettings, currentValue) {
 
 function restricaoTempoToggle() {
   const usertype = localStorage.getItem("usertype");
-  const valueTempo = document.getElementById("tempoRestricaoValue");
+  const valueTempo = document.getElementById("restricaoTempoValue");
   const currentSettings = localStorage.getItem("dadosSettings");
 
   // Converter em JSON para poder aceder as propriedades das settings
   const currentSettingsJSON = JSON.parse(currentSettings);
+  console.log("Current JSON OBject: ", currentSettingsJSON);
 
   // Se existir um valor de tempo passá-lo
   if (valueTempo != "") {
-    Object.defineProperty(
-      currentSettingsJSON,
-      "timeRestrictionValue",
-      valueTempo
-    );
+    Object.defineProperty(currentSettingsJSON, "timeRestrictionValue", {
+      value: valueTempo,
+    });
   } else {
-    Object.defineProperty(currentSettingsJSON, "timeRestrictionValue", 20);
+    Object.defineProperty(currentSettingsJSON, "timeRestrictionValue", {
+      value: 20,
+    });
   }
 
   // Apenas o admin pode mudar esta settings
@@ -904,6 +916,11 @@ function abrirPopupRodaDentada() {
 // Fechar popup rodaDentada
 function abrirPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "block";
+
+  // Se houver restrição de tempo o valor não mostra
+  if (timeRestriction) {
+    document.getElementById("restricaoTempoValue").style.display = "hidden";
+  }
   popupConfiguracoes = true;
 }
 
@@ -1123,9 +1140,13 @@ function showInstallPrompt() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
-  if (
-    getLastStartedRace() != document.getElementById("inputCorrida").value ||
-    document.getElementById("inputCorrida").value == "Start"
+  // Verificar se a corrida é superior (proxima) a ultima corrida, e se é um input de "Start" "Red Flag" ou "Slow Flag"
+
+  if (getLastStartedRace() == document.getElementById("inputCorrida").value) {
+    //Se for a mesma corrida procede como normal
+  } else if (
+    getLastStartedRace() > document.getElementById("inputCorrida").value ||
+    document.getElementById("curvaInput").value != "Start"
   ) {
     if (!verificarTempoEdicao()) {
       return;
@@ -1444,7 +1465,7 @@ function fetchUser(userID) {
       }
     })
     .then((data) => {
-      console.log("Usuário encontrado!", data);
+      //console.log("Usuário encontrado!", data);
       return data.username;
     });
 }
@@ -2237,6 +2258,8 @@ function verificarTempoEdicao() {
       (entry) => entry.corrida === corridaAnterior
     );
 
+    console.log("FILTERED RESULTS HERE: ", filteredResults);
+
     // Mapear os tempos encontrados para segundos
     const timesInSeconds = filteredResults.map((item) =>
       timeStringToSeconds(item.hora)
@@ -2282,7 +2305,7 @@ function verificarTempoEdicao() {
   const diffMs = now.getTime() - tempoLinha.getTime();
   console.log("Minutos:", diffMs / 1000 / 60 / 20);
   // 20 minutos em milisegundos
-  const tempoIntervalo = 20 * 60 * 1000;
+  const tempoIntervalo = timeRestrictionValue * 60 * 1000;
 
   if (diffMs > tempoIntervalo && localStorage.getItem("usertype") != "admin") {
     alert("Passaram mais de 20 minutos desde o término dessa corrida");
@@ -2298,6 +2321,8 @@ function abrirDetalhes(id) {
 
   const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
   if (detalhes && canUserDeleteEntry(detalhes)) {
+    console.log("DETALHES CORRIDA NUMERO:", detalhes.corrida); // 2
+    console.log("A função retorna:", getLastStartedRace());
     //Verificar se não passou demasiado tempo
     if (detalhes.corrida != getLastStartedRace()) {
       if (!verificarTempoEdicao()) {
@@ -2337,6 +2362,8 @@ function preencherPopupComDetalhes(detalhes) {
     const nfaCheck = document.getElementById("nfacheck2");
     const corridaInput = document.getElementById("inputCorrida2");
 
+    // Caso exista restrição
+
     // Verifica se os elementos existem no DOM
     if (
       curvaInput &&
@@ -2359,6 +2386,12 @@ function preencherPopupComDetalhes(detalhes) {
       reportCheck.checked = detalhes.report || false;
       priorityCheck.checked = detalhes.priority || false;
       obsInput.value = detalhes.obs || "";
+
+      if (corridaInput.value != getLastStartedRace()) {
+        if (!verificarTempoEdicao()) {
+          horainput.setAttribute("disabled", "");
+        }
+      }
 
       //Guardar o input da curva anterior Turn ou Post
       if (curvaInput.value.includes("P")) {
@@ -3009,11 +3042,17 @@ function fetchMessages() {
     .then((response) => response.json())
     .then((data) => {
       // Atualiza as configurações com os dados recebidos
-      loadMessagesInChat(data);
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("historicoMensagens", JSON.stringify(data));
       console.log("Mensagens", data);
     });
+}
+
+function chatToggle() {
+  const chat = document.getElementById("chat-container");
+  const minimizeIcon = document.getElementById("chat-toggle");
+  chat.classList.toggle("minimized");
+  minimizeIcon.classList.toggle("hidden");
 }
 
 // Carregar as mensagens para o chat

@@ -29,7 +29,7 @@
   }
   </script>
 
-<body>
+<>
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
 <div id="content-top">
@@ -219,7 +219,7 @@
               </div>
               <div class="checkbox-item">
                 <label for="N.F.A">N.F.A</label>
-                <input type="checkbox" id="nfacheck">
+                <input type="checkbox" id="nfaCheck">
               </div>
               <div class="checkbox-item">
                 <label for="priorityCheck"> Priority</label>
@@ -378,10 +378,10 @@
   </div>
   <!-- Chat Container -->
 </div>
-<div id="chat-container">
-  <div id="chat-header">
+<div id="chat-container" >
+  <div id="chat-header" onclick="chatToggle()">
     <span>Chat</span>
-    <button id="chat-toggle">-</button>
+    <button id="chat-toggle" >-</button>
   </div>
   <div id="chat-content">
     <div id="chat-messages"></div>
@@ -393,7 +393,7 @@
       </select>
       <form id="chat-form">
         <input type="text" id="chat-message-input" placeholder="Digite sua mensagem...">
-        <button type="submit">Enviar</button>
+        <button type="submit" id="send-message-button">Enviar</button>
       </form>
     </div>
     </div>

@@ -2040,7 +2040,7 @@ label {
   position: fixed;
   bottom: 0;
   left: 20px;
-  width: 300px;
+  width: 350px;
   background: #f5f5f5;
   border: 1px solid #ddd;
   border-radius: 5px 5px 0 0;
@@ -2070,10 +2070,18 @@ label {
   padding: 10px;
   background: white;
 }
-
+#chat-toggle {
+  margin-bottom: 0;
+}
+#send-message-button {
+  margin-bottom: 0;
+}
+#chat-form {
+  display: flex;
+}
 .chat-message {
   margin-bottom: 10px;
-  padding: 8px;
+  padding: 2px;
   border-bottom: 1px solid #eee;
 }
 
@@ -2118,7 +2126,9 @@ label {
 }
 
 #chat-container.minimized #chat-header {
+  padding: 1.5rem;
   border-radius: 5px;
+  background-color: red;
 }
 
 .post {
@@ -2171,7 +2181,7 @@ label {
   padding: 0.25rem 0.5rem;
 }
 
-.user-list,
+/* .user-list, */
 .room-list,
 .activity {
   width: 100%;

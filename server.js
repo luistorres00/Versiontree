@@ -80,10 +80,9 @@ mongoose
         io.emit("message", buildMsg(name, text));
       });
 
-      /* // Listen for activity
       socket.on("activity", (name) => {
         socket.broadcast.emit("activity", name);
-      }); */
+      });
 
       socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
