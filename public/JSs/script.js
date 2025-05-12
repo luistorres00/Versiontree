@@ -2999,6 +2999,7 @@ let activity;
 let userList;
 let chatDisplay;
 let historicoMensagens;
+let chatState;
 
 // É necessário esperar que toda a página esteja carregada
 document.addEventListener("DOMContentLoaded", () => {
@@ -3033,6 +3034,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchMessages();
   loadMessagesInChat(historicoMensagens);
+  loadChatState();
 });
 
 function fetchMessages() {
@@ -3048,13 +3050,37 @@ function fetchMessages() {
     });
 }
 
+function loadChatState() {
+  chatState = localStorage.getItem("chatState");
+  const chat = document.getElementById("chat-container");
+  const minimizeIcon = document.getElementById("chat-toggle");
+  const messageContainer = document.getElementById("chat-messages");
+
+  if (chatState == "true") {
+    chat.classList.remove("minimized");
+    minimizeIcon.classList.remove("hidden");
+  } else {
+    // Dar scroll para as mensagens recentes automaticamente (antes de minimizar)
+    messageContainer.scrollTo(0, messageContainer.scrollHeight);
+    chat.classList.add("minimized");
+    minimizeIcon.classList.add("hidden");
+  }
+}
+
 function chatToggle() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
+
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
-}
 
+  if (chat.classList.contains("minimized")) {
+    chatState = false;
+  } else {
+    chatState = true;
+  }
+  localStorage.setItem("chatState", chatState);
+}
 // Carregar as mensagens para o chat
 function loadMessagesInChat(messages) {
   // Receber as mensagens e converter para objeto JSON
