@@ -2160,11 +2160,11 @@ label {
 }
 
 .post__header--user {
-  background-color: blue;
+  background-color: #E30613;
 }
 
 .post__header--reply {
-  background-color: purple;
+  background-color: #ee4752;
 }
 
 .post__header--name {

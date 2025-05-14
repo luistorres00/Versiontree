@@ -11,6 +11,10 @@
 <script src="JSs/scriptslogin.js"></script>
 <script src="JSs/expexcell.js"></script>
 <script src="JSs/tableScroll.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
+integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
+crossorigin="anonymous"
+referrerpolicy="no-referrer" ></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -358,6 +362,28 @@
     </table>
     <button onclick="fecharPopupFiltros();pesquisarCorrida();resetCorridas()">Confirm</button>
   </div>
+    <!-- Chat Container -->
+</div>
+<div id="chat-container" >
+  <div id="chat-header" onclick="chatToggle()">
+    <span>Chat</span>
+    <button id="chat-toggle" >-</button>
+  </div>
+  <div id="chat-content">
+    <div id="chat-messages"></div>
+    <p class="user-list"></p>
+    <p class="activity"></p>
+    <div id="chat-input-area">
+      <select id="chat-recipient-select">
+        <option value="all">Todos os usuários</option>
+      </select>
+      <form id="chat-form">
+        <input type="text" id="chat-message-input" placeholder="Digite sua mensagem...">
+        <button type="submit" id="send-message-button">Enviar</button>
+      </form>
+    </div>
+    </div>
+</div>
 </div>
                 
 </body>
@@ -376,6 +402,7 @@ document.getElementById('button-minus2').addEventListener('click', function() {
   disableButton(this);
   // Lógica adicional para -2 volta
 });
+
 
 document.querySelector('.table-container').addEventListener('scroll', function() {
   const firstHighlight = document.querySelector('.highlight');
