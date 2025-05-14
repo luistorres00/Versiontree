@@ -7,6 +7,7 @@ const {
   loginUser,
   logoutUser,
   fetchById,
+  fetchAllUsers,
 } = require("../controller/authController");
 const authenticateToken = require("../middleware/authenticateToken");
 
@@ -25,6 +26,18 @@ router.delete("/delete/:id", (req, res) => {
   deleteUser(req, res);
 });
 
+router.get("/fetchAllUsers", async (req, res) => {
+  try {
+    const userList = await fetchAllUsers();
+    if (userList) {
+      res.json(userList);
+    } else {
+      res.status(404).json({ message: "Usuários não encontrados" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Usuários não encontrados: Erro interno" });
+  }
+});
 // Rota para ir buscar o user por ID
 router.get("/fetchUser/:id", async (req, res) => {
   const userID = req.params.id;

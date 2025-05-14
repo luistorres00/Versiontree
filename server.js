@@ -7,7 +7,6 @@ const fs = require("fs");
 const path = require("path");
 const socketIO = require("socket.io");
 
-
 //variaveis de config e rotas
 const authRoutes = require("../Versiontree_new/routes/authRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
@@ -74,11 +73,11 @@ mongoose
     io.on("connection", (socket) => {
       console.log("A client connected:", socket.id);
 
-      socket.emit("message", buildMsg("System", "Bem vindo ao chat WFR!"));
+      //socket.emit("message", buildMsg("System", "Bem vindo ao chat WFR!"));
 
       // Listening for a message event
-      socket.on("message", ({ name, text }) => {
-        io.emit("message", buildMsg(name, text));
+      socket.on("message", ({ name, text, userID, recipient }) => {
+        io.emit("message", buildMsg(name, text, userID, recipient));
       });
 
       socket.on("activity", (name) => {
@@ -113,7 +112,7 @@ mongoose.connection.on("error", (err) => {
   console.error("MongoDB connection error:", err);
 });
 
-function buildMsg(name, text) {
+function buildMsg(name, text, userID, recipient) {
   return {
     name,
     text,
@@ -127,6 +126,8 @@ function buildMsg(name, text) {
       month: "2-digit",
       year: "numeric",
     }).format(new Date()),
+    userID,
+    recipient,
   };
 }
 

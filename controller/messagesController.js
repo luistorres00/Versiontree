@@ -2,9 +2,16 @@ const Messages = require("../models/messagesSchema");
 
 const addMessage = async (req, res) => {
   try {
-    const { text, name, time, userID, date } = req.body;
+    const { text, name, time, userID, date, recipient } = req.body;
     console.log("Body:", req.body);
-    const newMessage = new Messages({ text, name, time, userID, date });
+    const newMessage = new Messages({
+      text,
+      name,
+      time,
+      userID,
+      date,
+      recipient,
+    });
     await newMessage.save();
     console.log("Nova mensagem guardada: ", newMessage);
     res.status(201).json({ message: "Mensagem adicionada com sucesso" });
@@ -24,7 +31,18 @@ const getMessages = async (req, res) => {
   }
 };
 
+const deleteMessages = async (req, res) => {
+  try {
+    const deletedMessages = await Messages.deleteMany({});
+    res.json(deletedMessages);
+  } catch (error) {
+    console.log("Erro encontrado", error);
+    res.status(500).json({ error: "Erro ao apagar mensagens" });
+  }
+};
+
 module.exports = {
   addMessage,
   getMessages,
+  deleteMessages,
 };

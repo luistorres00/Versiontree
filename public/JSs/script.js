@@ -33,7 +33,7 @@ let defaultSettingsBody = {
 };
 
 //Declarado URL's
-const url = "http://172.20.10.6:16082/";
+const url = "http://localhost:16082/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://172.20.10.6:16082";
+    window.location.href = "http://localhost:16082";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
       window.scrollTo(0, posicaoScroll);
     }, 100);
   }
-  console.log(posicaoScroll);
 });
 
 // função que é ativada antes da página ser desligada
@@ -71,14 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
   loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
   if (!pesquisaField) {
-    console.log("Campo não encontrado");
   } else {
     pesquisaField.addEventListener("focus", function () {
-      console.log("focused on it");
       campoPesquisa = true;
     });
     pesquisaField.addEventListener("focusout", function () {
-      console.log("unfocused on it");
       campoPesquisa = false;
     });
   }
@@ -88,22 +84,19 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const chatField = document.getElementById("chat-message-input");
   if (!chatField) {
-    console.log("Campo não encontrado");
   } else {
     chatField.addEventListener("focus", function () {
-      console.log("focused on chat");
       campoChat = true;
     });
     chatField.addEventListener("focusout", function () {
-      console.log("unfocused on it");
       campoChat = false;
-    }); 
+    });
   }
 });
 
 // Verificação do estado das definições
 document.addEventListener("DOMContentLoaded", function () {
-  const url = "http://172.20.10.6:16082/settings/fetchSettings";
+  const url = "http://localhost:16082/settings/fetchSettings";
 
   fetch(url)
     .then((response) => response.json())
@@ -135,7 +128,6 @@ function getLastStartedRace() {
     }
   });
 
-  console.log(`🔍 Última corrida encontrada: ${ultimaCorrida}`);
   return ultimaCorrida;
 }
 
@@ -159,9 +151,6 @@ document.addEventListener("keydown", function (e) {
     document.activeElement === curvaInput ||
     document.activeElement === inputCorrida
   ) {
-    console.log(
-      "📝 Usuário está digitando em um campo manualmente. Ignorando entrada."
-    );
     return;
   }
 
@@ -172,15 +161,13 @@ document.addEventListener("keydown", function (e) {
     popupRodaDentada ||
     popupConfiguracoes
   ) {
-    console.log("Outro popup já está aberto. Ignorando entrada numérica.");
     return;
   }
 
   // 🔹 Se um número for pressionado
-  if (e.key >= "0" && e.key <= "9") {
+  if (e.key >= "0" && e.key <= "9" && !campoChat) {
     if (cameraInputBuffer === "") {
       horaFixada = obterHoraAtual();
-      console.log(`🕒 Hora fixada: ${horaFixada}`);
     }
 
     cameraInputBuffer += e.key;
@@ -215,7 +202,6 @@ document.addEventListener("keydown", function (e) {
         curvaInput.value = numericValue + " Turn"; // 🔥 Adiciona "Turn"
         valorCameraBackup = numericValue; // 🔄 Guarda o número
         cameraInput.value = ""; // 🔄 Limpa o campo da câmera
-        console.log(`✅ Valor "${numericValue}" transferido para curvaInput.`);
       }
     }
   }
@@ -227,7 +213,6 @@ document.addEventListener("keydown", function (e) {
       if (numericValue) {
         cameraInput.value = numericValue + " Cam"; // 🔥 Adiciona "Cam"
         curvaInput.value = ""; // 🔄 Limpa o campo de curva
-        console.log(`📷 Valor "${numericValue}" transferido para cameraInput.`);
       }
     }
   }
@@ -287,27 +272,25 @@ function obterHoraAtual() {
 
 // 🔹 Função para fechar apenas o popup que estiver aberto
 function fecharPopupIndividual() {
-  console.log("ESC pressionado. Verificando popups para fechar...");
-
   if (popupNumpadAberto) {
     fecharPopupNumpad();
     popupNumpadAberto = false;
     limparBuffer();
-    console.log("Popup numpad fechado.");
+
     return;
   }
 
   if (popupNumpadPasswordAberto) {
     fecharPopupNumpadPassword();
     popupNumpadPasswordAberto = false;
-    console.log("Popup numpad password fechado.");
+
     return;
   }
 
   if (popup2Aberto) {
     fecharPopup2();
     popup2Aberto = false;
-    console.log("Popup 2 fechado.");
+
     return;
   }
 
@@ -315,16 +298,13 @@ function fecharPopupIndividual() {
     fecharPopup();
     popupAberto = false;
     limparBuffer();
-    console.log("Popup principal fechado.");
+
     return;
   }
-
-  console.log("Nenhum popup estava aberto.");
 }
 
 // 🔹 Função para limpar o buffer quando o popup é fechado sem inserir dados
 function limparBuffer() {
-  console.log("Limpando buffer...");
   cameraInputBuffer = "";
   const cameraInput = document.getElementById("cameraNumber");
   if (cameraInput) {
@@ -341,8 +321,8 @@ document.addEventListener("keydown", function (e) {
     !popupNumpadPasswordAberto &&
     !popupRodaDentada &&
     !popupConfiguracoes &&
-    !campoPesquisa  &&
-    !campoChat 
+    !campoPesquisa &&
+    !campoChat
   ) {
     let redFlagCorrida = localStorage.getItem("redFlagCorrida");
     let ultimaCorridaStart = getLastStartedRace(); // 🔍 Busca a última corrida iniciada
@@ -356,7 +336,6 @@ document.addEventListener("keydown", function (e) {
 
           if (redFlagCorrida !== null && redFlagCorrida !== "null") {
             // 🔹 Verifica se existe Red Flag corretamente
-            console.log("🚩 Red Flag detectada! Perguntando ao usuário...");
 
             let isNewRace = confirm(
               "Red Flag Detected! New race or Restart?\nOK for new race, Cancel for restart."
@@ -372,7 +351,6 @@ document.addEventListener("keydown", function (e) {
               let obsElement = document.getElementById("obsInput");
               if (obsElement) {
                 obsElement.value = obsValue;
-                console.log(`obsInput atualizado para: ${obsValue}`);
               } else {
                 console.error("Elemento obsInput não encontrado no DOM.");
               }
@@ -610,8 +588,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
-      console.log("1");
-      fetch("http://172.20.10.6:16082/auth/logout", {
+
+      fetch("http://localhost:16082/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -647,7 +625,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Criar entrada de settings por defeito
 function createSettings() {
-  const url = `http://172.20.10.6:16082/settings/insertSettings`;
+  const url = `http://localhost:16082/settings/insertSettings`;
   // Envia os dados atualizados para o servidor
   fetch(url, {
     method: "POST",
@@ -658,8 +636,6 @@ function createSettings() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Configurações atualizadas com sucesso:", data);
-
       // Limpa os dados do localStorage após a atualização
       location.reload();
     })
@@ -698,11 +674,10 @@ function atualizarSettings(currentSettings, currentValue) {
     Object.defineProperty(updatedSettings, "timeRestrictionValue", {
       value: restricaoTempoValue ? restricaoTempoValue : 20,
     });
-    console.log("UPDATED SETTINGS", updatedSettings);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://172.20.10.6:16082/settings/updateSettings`;
+    const url = `http://localhost:16082/settings/updateSettings`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -713,7 +688,6 @@ function atualizarSettings(currentSettings, currentValue) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Configurações atualizadas com sucesso:", data);
         localStorage.setItem("dadosSettings", JSON.stringify(updatedSettings));
 
         // Limpa os dados do localStorage após a atualização
@@ -737,7 +711,6 @@ function restricaoTempoToggle() {
 
   // Converter em JSON para poder aceder as propriedades das settings
   const currentSettingsJSON = JSON.parse(currentSettings);
-  console.log("Current JSON OBject: ", currentSettingsJSON);
 
   // Se existir um valor de tempo passá-lo
   if (valueTempo != "") {
@@ -766,7 +739,7 @@ function restricaoTempoToggle() {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/getData";
+  const url = "http://localhost:16082/getData";
 
   fetch(url)
     .then((response) => response.json())
@@ -783,7 +756,6 @@ function carregarDados() {
 function inputRace() {
   // Verificar se o usuário é admin
   const userType = localStorage.getItem("usertype");
-  console.log(userType);
 
   if (userType !== "admin") {
     alert("Você não tem permissão para alterar o nome da corrida.");
@@ -794,7 +766,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-    fetch("http://172.20.10.6:16082/addRace", {
+    fetch("http://localhost:16082/addRace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -805,11 +777,10 @@ function inputRace() {
         if (!response.ok) {
           throw new Error("Erro ao adicionar corrida");
         }
+        deleteAllMessages(); // apagar o chat quando muda o nome da corrida
         return response.json();
       })
-      .then((data) => {
-        console.log("Corrida adicionada com sucesso:", data);
-      })
+      .then((data) => {})
       .catch((error) => {
         console.error("Erro ao adicionar corrida:", error);
       });
@@ -818,7 +789,7 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-  fetch("http://172.20.10.6:16082/getLRace")
+  fetch("http://localhost:16082/getLRace")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -847,7 +818,6 @@ function showWorkInProgress() {
 //limpar LocalStorage
 function limparLS() {
   localStorage.clear();
-  console.log("localStorage foi limpo.");
 }
 
 //abre o popup
@@ -902,7 +872,7 @@ function abrirPopupRodaDentada() {
   const rodaDentada = document.getElementById("popupRodadentada");
   document.getElementById("popupRodadentada").style.display = "block";
   const userType = localStorage.getItem("usertype");
-  console.log(userType);
+
   if (userType != "admin") {
     document.getElementById("numberCurvas").classList.add("hidden");
     document.getElementById("numberCorrida").classList.add("hidden");
@@ -1023,7 +993,7 @@ function getData() {
     return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
   }
 
-  const url = "http://172.20.10.6:16082/getData";
+  const url = "http://localhost:16082/getData";
 
   return fetch(url)
     .then((response) => response.json())
@@ -1222,12 +1192,11 @@ function adicionarLinha() {
       arrayCorridas.includes(Number(corrida))
     ) {
       window.alert("Race Restarted");
-      console.log("Race Restart Detected");
 
       // Atualizar o campo obsInput com Restart Race
       if (obsInput) {
         obsInput.value = `Restart Race Nº:${corrida}`;
-        console.log(`Updated obsInput with: Restart Race Nº:${corrida}`);
+
         obs = obsInput.value; // Atualizar o valor de `obs`
       } else {
         console.error(
@@ -1262,10 +1231,9 @@ function adicionarLinha() {
 function enviarJson() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novaLinhaData");
-  console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/addData";
+  const url = "http://localhost:16082/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1369,7 +1337,7 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://172.20.10.6:16082/updateData/${id}`;
+    const url = `http://localhost:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -1380,8 +1348,6 @@ function envUpJson() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Dados atualizados com sucesso:", data);
-
         // Limpa os dados do localStorage após a atualização
         localStorage.removeItem("novaLinhaData");
         location.reload();
@@ -1417,13 +1383,12 @@ function canUserDeleteEntry(entry) {
 function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
-  console.log(detalhes);
   // Get the entry details from the selected row
 
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id && canUserDeleteEntry(detalhes)) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://172.20.10.6:16082/dropData/${detalhes._id}`, {
+    fetch(`http://localhost:16082/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -1455,7 +1420,7 @@ function fetchUser(userID) {
     return Promise.reject("User ID not provided");
   }
 
-  return fetch(`http://172.20.10.6:16082/auth/fetchUser/${userID}`, {
+  return fetch(`http://localhost:16082/auth/fetchUser/${userID}`, {
     method: "GET",
   })
     .then((response) => {
@@ -1466,7 +1431,6 @@ function fetchUser(userID) {
       }
     })
     .then((data) => {
-      //console.log("Usuário encontrado!", data);
       return data.username;
     });
 }
@@ -1486,12 +1450,10 @@ function atualizarTabela(data) {
       return `S.T`;
     }
     const nomeSplit = nome.split(" ");
-    console.log("nomeSplit", nomeSplit);
 
     if (nomeSplit.length >= 2) {
       const nomeFirstLast = [nomeSplit[0], nomeSplit[nomeSplit.length - 1]];
-      console.log("Nomes", nomeFirstLast);
-      console.log(nomeFirstLast[0].charAt(0));
+
       var iniciais = [nomeFirstLast[0].charAt(0), nomeFirstLast[1].charAt(0)];
       /* if (
         (iniciais[0] == "S" && iniciais[1] == "T") ||
@@ -1678,7 +1640,7 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/dropData";
+  const url = "http://localhost:16082/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1689,7 +1651,6 @@ function limparTabela() {
     .then((response) => response.json())
     .then((data) => {
       location.reload;
-      console.log(data.message); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
       console.error("Erro ao apagar dados:", error);
@@ -1713,7 +1674,6 @@ function carregarDadosNumpad() {
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("numpadData", JSON.stringify(data));
       const databaseNum = JSON.parse(localStorage.getItem("numpadData"));
-      console.log(databaseNum);
       if (databaseNum) {
         databaseNum.forEach((item) => {
           if (item.numberButtons != null || item.numberButtons != undefined) {
@@ -1753,7 +1713,7 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/addDataNumpad";
+  const url = "http://localhost:16082/addDataNumpad";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1795,7 +1755,7 @@ function updateNumpad(corrida) {
 
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhesNumpad = JSON.parse(localStorage.getItem("numpadData"));
-  console.log(detalhesNumpad.id);
+
   detalhesNumpad.forEach((item) => {
     updatedNumpadData._id = item._id;
   });
@@ -1815,9 +1775,9 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://172.20.10.6:16082/updateNumpad/${id}`;
+    const url = `http://localhost:16082/updateNumpad/${id}`;
     // Envia os dados atualizados para o servidor
-    console.log(updatedData);
+
     fetch(url, {
       method: "POST",
       headers: {
@@ -1846,7 +1806,7 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/dropDataNumpad";
+  const url = "http://localhost:16082/dropDataNumpad";
 
   fetch(url, {
     method: "POST",
@@ -1926,7 +1886,6 @@ function generateNumpad() {
     //Caso já exista uma, remover e adicionar novo input
     const num = document.getElementById("numberCurvas").value;
     const databaseNum = localStorage.getItem("numCurvasBD");
-    console.log(databaseNum);
     if (databaseNum != undefined || databaseNum != null) {
       generatedNumber = databaseNum;
     } else {
@@ -2181,7 +2140,6 @@ function pesquisarCorrida(corridaLastChoice) {
   }
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
-  console.log(filter);
   // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
@@ -2259,8 +2217,6 @@ function verificarTempoEdicao() {
       (entry) => entry.corrida === corridaAnterior
     );
 
-    console.log("FILTERED RESULTS HERE: ", filteredResults);
-
     // Mapear os tempos encontrados para segundos
     const timesInSeconds = filteredResults.map((item) =>
       timeStringToSeconds(item.hora)
@@ -2275,10 +2231,10 @@ function verificarTempoEdicao() {
         ? item
         : max;
     }, filteredResults[0]); // Iniciallizar com o primeiro elemento
-
+    /* 
     console.log("Filtered Results:", filteredResults);
     console.log("Maximum Time (seconds):", maxTimeInSeconds);
-    console.log("Result with Max Time:", resultWithMaxTime);
+    console.log("Result with Max Time:", resultWithMaxTime); */
     resultMaxTime = resultWithMaxTime.hora;
   }
   console.log("Tempo:", resultMaxTime);
@@ -2309,8 +2265,10 @@ function verificarTempoEdicao() {
   const tempoIntervalo = timeRestrictionValue * 60 * 1000;
 
   if (diffMs > tempoIntervalo && localStorage.getItem("usertype") != "admin") {
-    alert("Time To Complain As Been Exceded\
-      Il Est Temps De Se Plaindre, Car Il a Été Dépassé");
+    alert(
+      "Time To Complain As Been Exceded\
+      Il Est Temps De Se Plaindre, Car Il a Été Dépassé"
+    );
     return false;
   }
   // Se não tiver passado o tempo ou se se tratar de um admin
@@ -2323,8 +2281,6 @@ function abrirDetalhes(id) {
 
   const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
   if (detalhes && canUserDeleteEntry(detalhes)) {
-    console.log("DETALHES CORRIDA NUMERO:", detalhes.corrida); // 2
-    console.log("A função retorna:", getLastStartedRace());
     //Verificar se não passou demasiado tempo
     if (detalhes.corrida != getLastStartedRace()) {
       if (!verificarTempoEdicao()) {
@@ -2696,7 +2652,7 @@ function updatePosition() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://172.20.10.6:16082/updateData/${id}`;
+    const url = `http://localhost:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -2707,8 +2663,6 @@ function updatePosition() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Dados atualizados com sucesso:", data);
-
         // Limpa os dados do localStorage após a atualização
         localStorage.removeItem("LinhaPosition1");
       })
@@ -2726,7 +2680,7 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-    const url2 = `http://172.20.10.6:16082/updateData/${id2}`;
+    const url2 = `http://localhost:16082/updateData/${id2}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2738,8 +2692,6 @@ function updatePosition() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Dados atualizados com sucesso:", data);
-
         // Limpa os dados do localStorage após a atualização
         localStorage.removeItem("LinhaPosition2");
       })
@@ -2761,7 +2713,7 @@ function carregarOpcoesCorrida() {
   const selectCorrida = document.getElementById("pesquisaCorrida");
   const numCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"));
   const maxCorridas = Math.max(...numCorridas);
-  console.log(maxCorridas);
+
   if (!popupFiltros) {
     for (let i = 1; i <= maxCorridas; i++) {
       if (numCorridas.includes(i)) {
@@ -2791,7 +2743,6 @@ function analisarCorridas() {
       }
     }
   }
-  console.log(Array.from(setNumCorridas));
   localStorage.setItem(
     "opcoesCorridas",
     JSON.stringify(Array.from(setNumCorridas))
@@ -2807,7 +2758,7 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/getObsOptions";
+  const url = "http://localhost:16082/getObsOptions";
 
   fetch(url)
     .then((response) => response.json())
@@ -2834,10 +2785,9 @@ function adicionarObsOptions() {
 
 function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
-  console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://172.20.10.6:16082/addObsOptions";
+  const url = "http://localhost:16082/addObsOptions";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -2988,7 +2938,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //-------------------------CHAT FUNCTIONS --------------------------------//
 
-const socket = io("https://172.20.10.6:443", {
+const socket = io("https://localhost:443", {
   username: { username: localStorage.getItem("username") },
 });
 
@@ -3002,6 +2952,8 @@ let userList;
 let chatDisplay;
 let historicoMensagens;
 let chatState;
+let recipientInput;
+let currentChatSelection;
 
 // É necessário esperar que toda a página esteja carregada
 document.addEventListener("DOMContentLoaded", () => {
@@ -3014,33 +2966,60 @@ document.addEventListener("DOMContentLoaded", () => {
   //classes
   activity = document.querySelector(".activity");
   usersList = document.querySelector(".user-list");
+  userID = localStorage.getItem("userID");
   chatDisplay = document.querySelector("#chat-messages");
+  recipientInput = document.querySelector("#chat-recipient-select");
+  currentChatSelection = JSON.parse(
+    localStorage.getItem("currentChatSelection")
+  );
+
+  // Quando o alvo da mensagem é mudado
+  recipientInput.addEventListener("change", function () {
+    fetchMessages();
+    setTimeout(() => {
+      filterMessagesPerUser(recipientInput.value);
+      localStorage.setItem(
+        "currentChatSelection",
+        JSON.stringify({
+          value: recipientInput.value,
+        })
+      );
+    }, 100);
+  });
 
   // Eventlisterners
   chatForm.addEventListener("submit", sendMessage);
   msgInput.addEventListener("keypress", () => {
-    socket.emit("activity", nameInput);
+    const activityData = JSON.stringify({
+      name: nameInput,
+      senderID: userID,
+      recipient: recipientInput.value,
+    });
+    socket.emit("activity", activityData);
   });
 
-  // Mostrar que o user está a escrever
-  let activityTimer;
-  socket.on("activity", (name) => {
-    activity.textContent = `${name} is typing...`;
-
-    // Clear after 3 seconds
-    clearTimeout(activityTimer);
-    activityTimer = setTimeout(() => {
-      activity.textContent = "";
-    }, 3000);
-  });
+  // Vai buscar todas as mesagens
 
   fetchMessages();
-  loadMessagesInChat(historicoMensagens);
+
+  //Vai buscar todos os users
+
+  loadUsersIntoChat();
+
+  // Caso exista uma seleção prévia
+  if (currentChatSelection) {
+    recipientInput.value = currentChatSelection.value;
+  }
+
+  // Filta as mensagens por seleção
+  filterMessagesPerUser();
+
+  //Verifica se o chat estava préviamente fechado, ou aberto
   loadChatState();
 });
 
 function fetchMessages() {
-  const url = "http://172.20.10.6:16082/messages/getMessages";
+  const url = "http://localhost:16082/messages/getMessages";
 
   fetch(url)
     .then((response) => response.json())
@@ -3048,8 +3027,59 @@ function fetchMessages() {
       // Atualiza as configurações com os dados recebidos
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("historicoMensagens", JSON.stringify(data));
-      console.log("Mensagens", data);
     });
+}
+
+function fetchAllUsers() {
+  const url = "http://localhost:16082/auth/fetchAllUsers";
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem("userList", JSON.stringify(data));
+    });
+}
+
+//Vai buscar as mensagens apenas do usuário
+function filterMessagesPerUser(value) {
+  const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+  console.log("ALL MESSAGES:", allMessages);
+  const userID = localStorage.getItem("userID");
+  const filteredObjects = [];
+  allMessages.forEach((message) => {
+    if (message.recipient == "all" && recipientInput.value == "all") {
+      filteredObjects.push(message);
+    } else {
+      if (
+        (message.userID == userID &&
+          message.recipient == recipientInput.value) ||
+        (message.recipient == userID && message.userID == recipientInput.value)
+      ) {
+        filteredObjects.push(message);
+      }
+    }
+  });
+  const readyMessages = JSON.stringify(filteredObjects);
+  while (chatDisplay.firstChild) {
+    chatDisplay.removeChild(chatDisplay.lastChild);
+  }
+  loadMessagesInChat(readyMessages);
+}
+
+// Carregar os utilizadors da bd para o menu select do chat
+function loadUsersIntoChat() {
+  fetchAllUsers();
+  const userList = JSON.parse(localStorage.getItem("userList"));
+  console.log("JSON OBJECT:", userList);
+  const chatSelect = recipientInput;
+
+  //Por cada usuário acrescenta uma opção
+  userList.forEach((user) => {
+    const option = document.createElement("option");
+    option.value = user._id;
+    option.text = user.username;
+    chatSelect.appendChild(option);
+  });
 }
 
 function loadChatState() {
@@ -3125,17 +3155,24 @@ function loadMessagesInChat(messages) {
       p.innerHTML = `<div class="post__text">${text}</div>`;
     }
     document.querySelector("#chat-messages").appendChild(p);
+
+    // Dar scroll down nas mensagens apos o carregamento
+    document
+      .querySelector("#chat-messages")
+      .scrollTo(0, document.querySelector("#chat-messages").scrollHeight);
   });
 }
 
 // Função de envio da mensagem
 function sendMessage(e) {
+  const userID = localStorage.getItem("userID");
   e.preventDefault();
   if (nameInput && msgInput.value) {
     const messageData = {
       text: msgInput.value,
       name: nameInput,
       type: "message",
+      userID: userID,
       time: new Intl.DateTimeFormat("default", {
         hour: "numeric",
         minute: "numeric",
@@ -3146,6 +3183,7 @@ function sendMessage(e) {
         month: "2-digit",
         year: "numeric",
       }).format(new Date()),
+      recipient: recipientInput.value,
     };
     socket.emit("message", messageData);
     // Store immediately after emitting
@@ -3156,7 +3194,7 @@ function sendMessage(e) {
 }
 
 function storeMessage(dataMessage) {
-  const url = "http://172.20.10.6:16082/messages/addMessage";
+  const url = "http://localhost:16082/messages/addMessage";
 
   // Envia os dados atualizados para o servidor
   fetch(url, {
@@ -3178,21 +3216,36 @@ function storeMessage(dataMessage) {
     });
 }
 
-function enterRoom(e) {
-  e.preventDefault();
-  if (nameInput) {
-    socket.emit("enterRoom", {
-      name: nameInput,
+function deleteAllMessages() {
+  const url = "http://localhost:16082/messages/deleteMessages";
+
+  fetch(url, { method: "DELETE" })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Linha excluída com sucesso.");
+        // Se a linha foi excluída com sucesso, você pode tomar alguma ação adicional aqui, como recarregar a página ou atualizar a tabela
+      } else {
+        console.error("Erro ao apagar mensagens:", response.status);
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer o pedido de deleção de mensagens:", error);
     });
-  }
 }
 
 // A espera que o evento "message" seja emitido
 socket.on("message", (data) => {
-  if (data.name != "System") {
-    Object.defineProperty(data, "userID", {
-      value: localStorage.getItem("userID"),
-    });
+  if (data.recipient == "all" && recipientInput.value == "all") {
+  } else if (
+    ((data.recipient == localStorage.getItem("userID") &&
+      data.recipient != "all") ||
+      (data.userID == localStorage.getItem("userID") &&
+        data.recipient != "all")) &&
+    document.querySelector("#chat-recipient-select").value != "all"
+    //Meramente para evitar leaks de mensages para o chat geral
+  ) {
+  } else {
+    return;
   }
 
   // Dar reset ao campo de "User is typing..."
@@ -3226,49 +3279,36 @@ socket.on("message", (data) => {
   document.querySelector("#chat-messages").appendChild(p);
 
   chatDisplay.scrollTop = chatDisplay.scrollHeight;
+  //filterMessagesPerUser();
 });
 
-// Função que deteta quando um usuário está a escrever
+// Mostrar que o user está a escrever
 let activityTimer;
-socket.on("activity", (name) => {
-  activity.textContent = `${name} is typing...`;
+socket.on("activity", (activityDataRaw) => {
+  const userID = localStorage.getItem("userID");
+  const activityData = JSON.parse(activityDataRaw);
+  console.log(
+    "name: ",
+    activityData.name,
+    "\nID: ",
+    activityData.senderID,
+    "\nCurrent ID:",
+    userID,
+    "\nRecipient: ",
+    activityData.recipient
+  );
 
-  // Após um segundo sem atividade, apaga a mensagem de estar a escrever
+  if (activityData.senderID != userID) {
+    if (recipientInput.value == "all" && activityData.recipient == "all") {
+      activity.textContent = `${activityData.name} is typing...`;
+    } else if (recipientInput.value == activityData.senderID) {
+      activity.textContent = `${activityData.name} is typing...`;
+    }
+  }
+
+  // Clear after 3 seconds
   clearTimeout(activityTimer);
   activityTimer = setTimeout(() => {
     activity.textContent = "";
-  }, 3000);
+  }, 1000);
 });
-
-/* function showUsers(users) {
-  usersList.textContent = "";
-  if (users) {
-    usersList.innerHTML = `<em>Users in ${chatRoom.value}:</em>`;
-    users.forEach((user, i) => {
-      usersList.textContent += ` ${user.name}`;
-      if (users.length > 1 && i !== users.length - 1) {
-        usersList.textContent += ",";
-      }
-    });
-  }
-}
-
-socket.on("userList", ({ users }) => {
-  showUsers(users);
-});
-
-socket.on("roomList", ({ rooms }) => {
-  showRooms(rooms);
-});
-
-function showRooms(rooms) {
-  roomList.textContent = "";
-  if (rooms) {
-    roomList.innerHTML = "<em>Active Rooms:</em>";
-    rooms.forEach((room, i) => {
-      roomList.textContent += ` ${room}`;
-      if (rooms.length > 1 && i !== rooms.length - 1) {
-        roomList.textContent += ",";
-      }
-    });
-  } */
