@@ -2194,3 +2194,7 @@ label {
 .activity {
   font-style: italic;
 }
+
+#chat-image{
+  width: 20px;
+}

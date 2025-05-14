@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (logoutButton) {
       logoutButton.addEventListener("click", function () {
-        fetch("http://172.20.10.6:16082/auth/logout", {
+        fetch("http://192.168.50.22:16082/auth/logout", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -148,7 +148,7 @@ function login() {
     password: password,
   };
 
-  fetch("http://172.20.10.6:16082/auth/login", {
+  fetch("http://192.168.50.22:16082/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

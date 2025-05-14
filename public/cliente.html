@@ -373,7 +373,8 @@ referrerpolicy="no-referrer" ></script>
 </div>
 <div id="chat-container" >
   <div id="chat-header" onclick="chatToggle()">
-    <span>Chat</span>
+    <span id="chat-span">Chat</span>
+    <img id="chat-image" src="./images/chat_1.png" class="hidden">
     <button id="chat-toggle" >-</button>
   </div>
   <div id="chat-content">
@@ -393,26 +394,7 @@ referrerpolicy="no-referrer" ></script>
 </div>
 </div>
                 
-<div id="chat-container" >
-  <div id="chat-header" onclick="chatToggle()">
-    <span>Chat</span>
-    <button id="chat-toggle" >-</button>
-  </div>
-  <div id="chat-content">
-    <div id="chat-messages"></div>
-    <p class="user-list"></p>
-    <p class="activity"></p>
-    <div id="chat-input-area">
-      <select id="chat-recipient-select">
-        <option value="all">Todos os usuários</option>
-      </select>
-      <form id="chat-form">
-        <input type="text" id="chat-message-input" placeholder="Digite sua mensagem...">
-        <button type="submit" id="send-message-button">Enviar</button>
-      </form>
-    </div>
-    </div>
-</div>
+
 
 </body>
 <script>

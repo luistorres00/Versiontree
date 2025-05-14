@@ -33,7 +33,7 @@ let defaultSettingsBody = {
 };
 
 //Declarado URL's
-const url = "http://localhost:16082/";
+const url = "http://192.168.50.22:16082/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://localhost:16082";
+    window.location.href = "http://192.168.50.22:16082";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Verificação do estado das definições
 document.addEventListener("DOMContentLoaded", function () {
-  const url = "http://localhost:16082/settings/fetchSettings";
+  const url = "http://192.168.50.22:16082/settings/fetchSettings";
 
   fetch(url)
     .then((response) => response.json())
@@ -589,7 +589,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
 
-      fetch("http://localhost:16082/auth/logout", {
+      fetch("http://192.168.50.22:16082/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -625,7 +625,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Criar entrada de settings por defeito
 function createSettings() {
-  const url = `http://localhost:16082/settings/insertSettings`;
+  const url = `http://192.168.50.22:16082/settings/insertSettings`;
   // Envia os dados atualizados para o servidor
   fetch(url, {
     method: "POST",
@@ -677,7 +677,7 @@ function atualizarSettings(currentSettings, currentValue) {
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/settings/updateSettings`;
+    const url = `http://192.168.50.22:16082/settings/updateSettings`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -739,7 +739,7 @@ function restricaoTempoToggle() {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/getData";
+  const url = "http://192.168.50.22:16082/getData";
 
   fetch(url)
     .then((response) => response.json())
@@ -766,7 +766,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-    fetch("http://localhost:16082/addRace", {
+    fetch("http://192.168.50.22:16082/addRace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -789,7 +789,7 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-  fetch("http://localhost:16082/getLRace")
+  fetch("http://192.168.50.22:16082/getLRace")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -993,7 +993,7 @@ function getData() {
     return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
   }
 
-  const url = "http://localhost:16082/getData";
+  const url = "http://192.168.50.22:16082/getData";
 
   return fetch(url)
     .then((response) => response.json())
@@ -1233,7 +1233,7 @@ function enviarJson() {
   const localStorageData = localStorage.getItem("novaLinhaData");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addData";
+  const url = "http://192.168.50.22:16082/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1337,7 +1337,7 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateData/${id}`;
+    const url = `http://192.168.50.22:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -1388,7 +1388,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id && canUserDeleteEntry(detalhes)) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://localhost:16082/dropData/${detalhes._id}`, {
+    fetch(`http://192.168.50.22:16082/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -1420,7 +1420,7 @@ function fetchUser(userID) {
     return Promise.reject("User ID not provided");
   }
 
-  return fetch(`http://localhost:16082/auth/fetchUser/${userID}`, {
+  return fetch(`http://192.168.50.22:16082/auth/fetchUser/${userID}`, {
     method: "GET",
   })
     .then((response) => {
@@ -1640,7 +1640,7 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/dropData";
+  const url = "http://192.168.50.22:16082/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1713,7 +1713,7 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addDataNumpad";
+  const url = "http://192.168.50.22:16082/addDataNumpad";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1775,7 +1775,7 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateNumpad/${id}`;
+    const url = `http://192.168.50.22:16082/updateNumpad/${id}`;
     // Envia os dados atualizados para o servidor
 
     fetch(url, {
@@ -1806,7 +1806,7 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/dropDataNumpad";
+  const url = "http://192.168.50.22:16082/dropDataNumpad";
 
   fetch(url, {
     method: "POST",
@@ -2652,7 +2652,7 @@ function updatePosition() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateData/${id}`;
+    const url = `http://192.168.50.22:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -2680,7 +2680,7 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-    const url2 = `http://localhost:16082/updateData/${id2}`;
+    const url2 = `http://192.168.50.22:16082/updateData/${id2}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2758,7 +2758,7 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/getObsOptions";
+  const url = "http://192.168.50.22:16082/getObsOptions";
 
   fetch(url)
     .then((response) => response.json())
@@ -2787,7 +2787,7 @@ function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addObsOptions";
+  const url = "http://192.168.50.22:16082/addObsOptions";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -2938,7 +2938,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //-------------------------CHAT FUNCTIONS --------------------------------//
 
-const socket = io("https://localhost:443", {
+const socket = io("https://192.168.50.22:443", {
   username: { username: localStorage.getItem("username") },
 });
 
@@ -3019,7 +3019,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function fetchMessages() {
-  const url = "http://localhost:16082/messages/getMessages";
+  const url = "http://192.168.50.22:16082/messages/getMessages";
 
   fetch(url)
     .then((response) => response.json())
@@ -3031,7 +3031,7 @@ function fetchMessages() {
 }
 
 function fetchAllUsers() {
-  const url = "http://localhost:16082/auth/fetchAllUsers";
+  const url = "http://192.168.50.22:16082/auth/fetchAllUsers";
 
   fetch(url)
     .then((response) => response.json())
@@ -3087,28 +3087,40 @@ function loadChatState() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
   const messageContainer = document.getElementById("chat-messages");
+  const chatSpan = document.getElementById("chat-span");
+  const chatImage = document.getElementById("chat-image");
 
   if (chatState == "true") {
     chat.classList.remove("minimized");
     minimizeIcon.classList.remove("hidden");
+    chatSpan.classList.remove("hidden");
+    chatImage.classList.add("hidden")
   } else {
     // Dar scroll para as mensagens recentes automaticamente (antes de minimizar)
     messageContainer.scrollTo(0, messageContainer.scrollHeight);
     chat.classList.add("minimized");
     minimizeIcon.classList.add("hidden");
+    chatSpan.classList.add("hidden");
+    chatImage.classList.remove("hidden");
   }
 }
 
 function chatToggle() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
+  const chatSpan = document.getElementById("chat-span");
+  const chatImage = document.getElementById("chat-image");
 
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
 
   if (chat.classList.contains("minimized")) {
+    chatSpan.classList.add("hidden");
+    chatImage.classList.remove("hidden");
     chatState = false;
   } else {
+    chatSpan.classList.remove("hidden");
+    chatImage.classList.add("hidden");
     chatState = true;
   }
   localStorage.setItem("chatState", chatState);
@@ -3194,7 +3206,7 @@ function sendMessage(e) {
 }
 
 function storeMessage(dataMessage) {
-  const url = "http://localhost:16082/messages/addMessage";
+  const url = "http://192.168.50.22:16082/messages/addMessage";
 
   // Envia os dados atualizados para o servidor
   fetch(url, {
@@ -3217,7 +3229,7 @@ function storeMessage(dataMessage) {
 }
 
 function deleteAllMessages() {
-  const url = "http://localhost:16082/messages/deleteMessages";
+  const url = "http://192.168.50.22:16082/messages/deleteMessages";
 
   fetch(url, { method: "DELETE" })
     .then((response) => {

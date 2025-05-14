@@ -37,8 +37,8 @@ if (!fs.existsSync(certPath)) {
 }
 
 const options = {
-  key: fs.readFileSync(path.resolve(pwaPath, "10.12.84.130-key.pem")),
-  cert: fs.readFileSync(path.resolve(pwaPath, "10.12.84.130.pem")),
+  key: fs.readFileSync(path.resolve(pwaPath, "192.168.50.22-key.pem")),
+  cert: fs.readFileSync(path.resolve(pwaPath, "192.168.50.22.pem")),
 };
 const port = process.env.PORT || 16082;
 const httpPort = process.env.PORT || 443;

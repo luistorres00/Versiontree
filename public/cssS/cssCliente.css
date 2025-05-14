@@ -1896,7 +1896,7 @@ label{
   text-align: left;
   
 }
-* Estilos do Chat */
+/* Estilos do Chat */
 #chat-container {
   position: fixed;
   bottom: 0;
@@ -2055,4 +2055,7 @@ label{
 .activity {
   font-style: italic;
 }
- 
+
+#chat-image{
+  width: 20px;
+}
