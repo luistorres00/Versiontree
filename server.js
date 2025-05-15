@@ -84,6 +84,15 @@ mongoose
         socket.broadcast.emit("activity", name);
       });
 
+      socket.on("chat-focused", (data) => {
+        socket.emit("chat-focused",sendSeenResponse(data));
+      });
+
+      socket.on("notification-set",(data)=>{
+        console.log("Notification backend",data);
+        socket.broadcast.emit("notification-set",sendNotif(data));
+      })
+
       socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
       });
@@ -129,6 +138,20 @@ function buildMsg(name, text, userID, recipient) {
     userID,
     recipient,
   };
+}
+
+function sendSeenResponse(data){
+  return{
+    senderID: data.senderID,
+    userID: data.userID
+  }
+}
+
+function sendNotif(data){
+  return{
+    senderID: data.senderID,
+    recipient: data.recipient
+  }
 }
 
 // Middleware para análise de dados JSON

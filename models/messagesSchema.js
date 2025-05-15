@@ -20,6 +20,9 @@ const messagesSchema = new mongoose.Schema({
   recipient: {
     type: String,
   },
+  seen: {
+    type: Boolean,
+  },
 });
 
 const Messages = mongoose.model("Messages", messagesSchema);

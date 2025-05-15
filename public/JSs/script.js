@@ -2957,6 +2957,7 @@ let msgInput;
 let chatForm;
 let nameInput;
 let activity;
+let userID;
 let userList;
 let chatDisplay;
 let historicoMensagens;
@@ -2981,6 +2982,16 @@ document.addEventListener("DOMContentLoaded", () => {
   currentChatSelection = JSON.parse(
     localStorage.getItem("currentChatSelection")
   );
+
+  // Verificar se o campo está em foco (Para verificar a visualização de mensagens)
+  // Enviar o id do user com o qual o chat está aberto
+
+  msgInput.addEventListener("focus", () => {
+    socket.emit("chat-focused", {
+      senderID: currentChatSelection.value,
+      userID: userID,
+    });
+  });
 
   // Quando o alvo da mensagem é mudado
   recipientInput.addEventListener("change", function () {
@@ -3038,6 +3049,71 @@ function fetchMessages() {
       localStorage.setItem("historicoMensagens", JSON.stringify(data));
     });
 }
+
+function updateSeenStatus(message){
+  const url = `http://localhost:16082/messages/setSeen/${message._id}`;
+
+    try{
+      fetch(url,{
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(message)
+      })
+      .then((response)=> {
+          response.json()
+        })
+    }catch(error){
+        console.log("Something went wrong updating messages:", error);
+    }
+}
+
+socket.on("notification-set",(data)=>{
+  console.log("RECEIVED");
+  const userID = localStorage.getItem("userID");
+  const senderID = data.senderID;
+  const recipient = data.recipient;
+  console.log("userID: ",userID,"\nrecipient: ",recipient);
+  const listaUsers = document.getElementById("chat-recipient-select")
+  let matchingOption;
+  for(i=0; i<= listaUsers.options.length-1; i++){
+    if(listaUsers.options[i].value == senderID && recipient == userID ){
+      console.log("ENTERED!");
+      listaUsers.classList.add("notif-general");
+      listaUsers.options[i].classList.add("notif-on");
+      break
+    }
+  }
+
+})
+
+socket.on("chat-focused", (data)=>{
+  
+ const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+  allMessages.forEach((message)=>{
+    if(message.userID == data.senderID && message.recipient == data.userID){
+      updateSeenStatus(message);
+    }
+  });
+
+  // Dar reset ao marcador de notificação
+  const userID = localStorage.getItem("userID");
+  const senderID = data.senderID;
+  const recipient = data.userID;
+  console.log("userID: ",userID,"\nrecipient: ",recipient);
+  const listaUsers = document.getElementById("chat-recipient-select")
+  let matchingOption;
+  for(i=0; i<= listaUsers.options.length-1; i++){
+    if(listaUsers.options[i].value == senderID && recipient == userID ){
+      console.log("ENTERED!");
+      listaUsers.classList.remove("notif-general");
+      listaUsers.options[i].classList.remove("notif-on");
+      break
+    }
+  }
+})
+
 
 function fetchAllUsers() {
   const url = "http://localhost:16082/auth/fetchAllUsers";
@@ -3207,6 +3283,7 @@ function sendMessage(e) {
       recipient: recipientInput.value,
     };
     socket.emit("message", messageData);
+    socket.emit("notification-set",{senderID: userID, recipient: messageData.recipient})
     // Store immediately after emitting
     storeMessage(messageData);
     msgInput.value = "";

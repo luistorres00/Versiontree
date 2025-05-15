@@ -2198,3 +2198,17 @@ label {
 #chat-image{
   width: 20px;
 }
+
+/*Para as notificações*/
+
+.notif-on{
+  background-color: red;
+}
+
+.notif-general{
+  background-color: #e29032; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto branco */
+  animation: blinks 2s infinite;
+  transition-duration: 1s infinite;
+  animation: blinks 1s infinite !important;
+}

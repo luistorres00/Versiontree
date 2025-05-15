@@ -1,0 +1,24 @@
+
+Etapas
+- Resolver o bug da edição de corrida (se adicionar uma corrida em avanço desabilita as outras quando a restrição de tempo está ligada)
+- Conseguir programar notificações no programa
+- Filtrar os users disponiveis para enviar mensagem, somente aos que estão logged in.
+
+Resolvido:
+- Como a ultima corrida obtida estava a ser chamada a subtrair -1 se a corrida tivesse valores a cima de um incrementados (por exemplo passar de 10 para 12) ele ia tentar chamar a corrida 11 que não existia e parava.
+Agora a ultima corrida é obtida através da aquisição de todas as listas de corridas, e obter o penultimo elemento (arrayCorridas[arrayCorridas.length-2])
+
+- Maior parte das sugestões de apps de chat sugerem React, mas neste ponto não penso que seja muito apto reformular todo o front end para react (Já para não falar que é uma framework que necessita de estudo).
+- Uma possibilidade seria :
+	-> Na base de dados acrescentar um campo "seen: Boolean" para confirmar se o recetor de uma frase viu 	ou não uma determinada mensagem
+	
+	-> No script, criar uma função que verificasse quando o utilizador prime o campo de chat, estando no 	chat correspondente da pessoa que mandou, e, se tal se verifica-se, assinalar todas as mensagens desse 	chat como vistas.
+
+Passos:
+
+1 - Adicionar o campo visto no schema do modelo de mensagens
+2 - Adicionar no controlador adMewssage, um campo "seen: false" por defeito e um controlador que altera esse estado para true (vai ser necessário um updateMessage).
+3 - Adicionar a função nas rotas (e exportações)
+4 - Verificar se é possivel criar um evento custom chamado "verificarMensagem" que é emitido sempre que o campo de chat é selecionado
+	4.1 -> Aquando da aquisição de todas as mensagens, verificar se alguma é correspondente ao user logado 	e se 
+	4.2 -> Quando o campo é selecionado, verificar o remetende das mensagens filtradas, e mudar todas 		automáticamente para "lidas" (seen: true).

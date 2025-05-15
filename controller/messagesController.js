@@ -11,6 +11,7 @@ const addMessage = async (req, res) => {
       userID,
       date,
       recipient,
+      seen: false,
     });
     await newMessage.save();
     console.log("Nova mensagem guardada: ", newMessage);
@@ -41,8 +42,25 @@ const deleteMessages = async (req, res) => {
   }
 };
 
+// Atualiza o estado da mensagem quando vista
+const updateMessageState = async (req, res) => {
+  try {
+    const fetchedMessage = req.body;
+    console.log("Message id Controller:",fetchedMessage);
+    const updatedMessage = await Messages.findOneAndUpdate(
+      fetchedMessage,
+      { $set: { seen: true } },
+      { new: true }
+    );
+  } catch (error) {
+    console.log("Erro encontrado a alterar mensagem: ", error);
+    res.status(500).json({ error: "Erro ao atualizar mensagem" });
+  }
+};
+
 module.exports = {
   addMessage,
   getMessages,
   deleteMessages,
+  updateMessageState,
 };
