@@ -8,7 +8,7 @@ const path = require("path");
 const socketIO = require("socket.io");
 
 //variaveis de config e rotas
-const authRoutes = require("../Versiontree_new/routes/authRoutes");
+const authRoutes = require("../Versiontree/routes/authRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const routes = require("./routes/routing");
@@ -37,8 +37,8 @@ if (!fs.existsSync(certPath)) {
 }
 
 const options = {
-  key: fs.readFileSync(path.resolve(pwaPath, "192.168.50.22-key.pem")),
-  cert: fs.readFileSync(path.resolve(pwaPath, "192.168.50.22.pem")),
+  key: fs.readFileSync(path.resolve(pwaPath, "localhostJF-key.pem")),
+  cert: fs.readFileSync(path.resolve(pwaPath, "localhostJF.pem")),
 };
 const port = process.env.PORT || 16082;
 const httpPort = process.env.PORT || 443;
