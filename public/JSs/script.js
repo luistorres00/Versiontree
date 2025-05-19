@@ -3132,7 +3132,7 @@ function checkNotifications(){
   
 }
 
-function toggleNotifications(data, value){
+function toggleNotifications(data, value, notificationsSeen){
 
   //Value -> "Add" ou "Clear"
   console.log("Data:",data);
@@ -3141,7 +3141,8 @@ function toggleNotifications(data, value){
       const userID = localStorage.getItem("userID");
       const senderID = data.senderID || data.userID;
       const recipient = data.recipient || data.userID;
-      const listaUsers = document.getElementById("chat-recipient-select")
+      const listaUsers = document.getElementById("chat-recipient-select");
+      const notificatioCounter = document.getElementById("notification-counter");
 
       for(i=0; i<= listaUsers.options.length-1; i++){
         if(listaUsers.options[i].value == senderID && recipient == userID && currentChat != senderID){
@@ -3154,6 +3155,10 @@ function toggleNotifications(data, value){
           if (value == "Clear"){
             listaUsers.classList.remove("notif-general");
             listaUsers.options[i].classList.remove("notif-on");
+            if(notificationsSeen){
+              notificatioCounter.textContent = parseInt(notificatioCounter.textContent - notificationsSeen)<0 ? "" : parseInt(notificatioCounter.textContent - notificationsSeen);
+            }
+            
             break
           }
         }
@@ -3174,13 +3179,16 @@ socket.on("notification-set",(data)=>{
 socket.on("chat-focused", (data)=>{
   
  const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+ let notificationsSeen= 0;
   allMessages.forEach((message)=>{
     //console.log("UserID: ",message.userID,"\nSender.ID: ",data.senderID,"\nRecipient: ",message.recipient,"\nCurrent ID: ",data.userID);
-    if(message.userID == data.senderID && message.recipient == data.userID){
+    if(message.userID == data.senderID && message.recipient == data.userID && message.seen==false){
       updateSeenStatus(message);
+      notificationsSeen++;
     }
   });
-  toggleNotifications(data,"Clear");
+  fetchMessages();
+  toggleNotifications(data,"Clear",notificationsSeen);
 })
 
 //------------------------------------------------------------------------------------------------------------------------//
