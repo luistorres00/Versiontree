@@ -3111,21 +3111,24 @@ function addNotificationCounter(number){
 
 function checkNotifications(){
   fetchMessages();
-  const messages = JSON.parse(localStorage.getItem("historicoMensagens"));
-  const userID = localStorage.getItem("userID");
-  let notificationChecker = false;
-  notificationCounter = 0;
-  messages.forEach((message)=>{
+  setTimeout(()=>{
+    const messages = JSON.parse(localStorage.getItem("historicoMensagens"));
+    const userID = localStorage.getItem("userID");
+    let notificationChecker = false;
+    notificationCounter = 0;
+    messages.forEach((message)=>{
 
-    if(message.recipient == userID && message.seen==false){
-      notificationChecker = true;
-      notificationCounter ++;
-      toggleNotifications(message,"Add");
+      if(message.recipient == userID && message.seen==false){
+        notificationChecker = true;
+        notificationCounter ++;
+        toggleNotifications(message,"Add");
+      }
+    })
+    if(notificationChecker){
+      addNotificationCounter(notificationCounter);
     }
-  })
-  if(notificationChecker){
-    addNotificationCounter(notificationCounter);
-  }
+  },50)
+  
   
 }
 
