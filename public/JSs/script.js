@@ -3013,8 +3013,20 @@ document.addEventListener("DOMContentLoaded", () => {
           value: recipientInput.value,
         })
       );
-    }, 100);
-  });
+      
+      const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+      allMessages.forEach((message)=>{
+        //console.log("UserID: ",message.userID,"\nSender.ID: ",data.senderID,"\nRecipient: ",message.recipient,"\nCurrent ID: ",data.userID);
+       
+        if(message.userID == recipientInput.value && message.recipient == userID){
+           console.log("Entrou no primeiro ciclo");
+          updateSeenStatus(message);
+        }
+      });
+      const data = {senderID: recipientInput.value, userID : userID};
+      toggleNotifications(data,"Clear");
+        }, 100);
+      });
 
   // Eventlisterners
   chatForm.addEventListener("submit", sendMessage);
@@ -3063,37 +3075,46 @@ function fetchMessages() {
 }
 
 function updateSeenStatus(message){
+  console.log("Entered updateSeenStatus");
+  console.log("Message", message.text);
   const url = `http://localhost:16082/messages/setSeen/${message._id}`;
 
-    try{
-      fetch(url,{
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(message)
-      })
-      .then((response)=> {
-          response.json()
-        })
-    }catch(error){
-        console.log("Something went wrong updating messages:", error);
-    }
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Update response:", data);
+  })
+  .catch((error) => {
+    console.log("Something went wrong updating message:", error);
+  });
 }
+
 
 // ------------------------------------------------NOTIFICATIONS---------------------------------------------------------------//
 
 function addNotificationCounter(number){
   console.log("Entered function counter");
-  const notifCounter = document.getElementById("notification-counter")
+  const notifCounter = document.getElementById("notification-counter");
+  const chat = document.getElementById("chat-container");
+  if(chat.classList.contains("minimized")){
     notifCounter.classList.remove("hidden");
     notifCounter.textContent = number;
+  }
+    
 }
 
 function checkNotifications(){
+  fetchMessages();
   const messages = JSON.parse(localStorage.getItem("historicoMensagens"));
   const userID = localStorage.getItem("userID");
   let notificationChecker = false;
+  notificationCounter = 0;
   messages.forEach((message)=>{
 
     if(message.recipient == userID && message.seen==false){
@@ -3141,6 +3162,7 @@ function toggleNotifications(data, value){
 
 // Quando recebe notificação
 socket.on("notification-set",(data)=>{
+  checkNotifications();
   toggleNotifications(data, "Add");
 })
 
@@ -3148,8 +3170,9 @@ socket.on("notification-set",(data)=>{
 // Quando a caixa é selecionada, apaga notificação
 socket.on("chat-focused", (data)=>{
   
- const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+ const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
   allMessages.forEach((message)=>{
+    //console.log("UserID: ",message.userID,"\nSender.ID: ",data.senderID,"\nRecipient: ",message.recipient,"\nCurrent ID: ",data.userID);
     if(message.userID == data.senderID && message.recipient == data.userID){
       updateSeenStatus(message);
     }
@@ -3381,7 +3404,7 @@ function deleteAllMessages() {
 
 // A espera que o evento "message" seja emitido
 socket.on("message", (data) => {
-  checkNotifications();
+
   const currentChat = document.getElementById("chat-recipient-select").value;
 
   if (data.recipient == "all" && recipientInput.value == "all") {

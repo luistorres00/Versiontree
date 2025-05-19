@@ -9,25 +9,24 @@ const {
 
 // Route para armazenar mensagens
 router.post("/addMessage", (req, res) => {
-  console.log("Inserting message");
+  //console.log("Inserting message");
   addMessage(req, res);
 });
 
 // Route para ir buscar mensagens
 router.get("/getMessages", (req, res) => {
-  console.log("Fetching messages");
+  //console.log("Fetching messages");
   getMessages(req, res);
 });
 
 // Route para dar update como foi lida
 router.put("/setSeen/:id", (req, res) => {
-  console.log("Message was seen!");
   updateMessageState(req, res);
 });
 
 // Route para ir buscar mensagens
 router.delete("/deleteMessages", (req, res) => {
-  console.log("Deleting all messages...");
+  //console.log("Deleting all messages...");
   deleteMessages(req, res);
 });
 
