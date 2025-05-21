@@ -8,22 +8,22 @@ const {
 } = require("../controller/settingsController");
 
 router.post("/insertSettings", (req, res) => {
-  console.log("Inserting settings");
+  //console.log("Inserting settings");
   addSettings(req, res);
 });
 
 router.put("/updateSettings", (req, res) => {
-  console.log("Updating settings");
+  //console.log("Updating settings");
   putSettings(req, res);
 });
 
 router.get("/fetchSettings", (req, res) => {
-  console.log("Fetching settings");
+  //console.log("Fetching settings");
   getSettings(req, res);
 });
 
 router.delete("/deleteSettings", (req, res) => {
-  console.log("Deleting settings");
+  //console.log("Deleting settings");
   deleteSettings(req, res);
 });
 

@@ -135,7 +135,6 @@ const fetchAllUsers = async () => {
   try {
     console.log("Connecting to database and fetching users...");
     const users = await User.find();
-    console.log("Fetched users:", users);
     return users;
   } catch (error) {
     console.error("Erro ao buscar lista de usuários:", error);

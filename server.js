@@ -11,6 +11,7 @@ const socketIO = require("socket.io");
 const authRoutes = require("../Versiontree/routes/authRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const userStatusRoutes = require("./routes/isOnlineRoutes");
 const routes = require("./routes/routing");
 const {
   addController,
@@ -71,7 +72,10 @@ mongoose
 
     // Handle socket connections
     io.on("connection", (socket) => {
-      console.log("A client connected:", socket.id);
+      // criar o objecto user quando receber os dados da conexão
+      const { username, userID } = socket.handshake.auth;
+      const user = {username: username, userID: userID, userState: true};
+      setUserState(user);
 
       //socket.emit("message", buildMsg("System", "Bem vindo ao chat WFR!"));
 
@@ -93,9 +97,17 @@ mongoose
         socket.broadcast.emit("notification-set",sendNotif(data));
       })
 
+
+      
+
       socket.on("disconnect", () => {
-        console.log("Client disconnected:", socket.id);
+        user.userState = false;
+        setUserState(user);
+        console.log("Client disconnected:", user.userState);
+        ;
       });
+
+      
     });
 
     // Iniciar servidores
@@ -154,6 +166,27 @@ function sendNotif(data){
   }
 }
 
+function setUserState(user){
+  const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`
+  
+  console.log("User:\n",user);
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+    
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Update response:", data);
+  })
+  .catch((error) => {
+    console.log("Something went wrong updating message:", error);
+  });
+}
+
 // Middleware para análise de dados JSON
 app.use(bodyParser.json());
 
@@ -173,6 +206,9 @@ app.use("/settings", settingsRoutes);
 
 // Chat
 app.use("/messages", messageRoutes);
+
+//Atribuir um estado ao user
+app.use("/userStatus", userStatusRoutes);
 
 //use routing
 app.use(express.json());

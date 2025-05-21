@@ -2948,8 +2948,13 @@ document.addEventListener("DOMContentLoaded", function () {
 //-------------------------CHAT FUNCTIONS --------------------------------//
 
 const socket = io("https://localhost:443", {
-  username: { username: localStorage.getItem("username") },
+  // Passar as informações do usuário por handshake (no auth) para o servidor
+  auth: {
+    username: localStorage.getItem("username"),
+    userID: localStorage.getItem("userID")
+  }
 });
+
 
 // Variáveis
 
@@ -3061,6 +3066,42 @@ document.addEventListener("DOMContentLoaded", () => {
   //Verificar notificações
   checkNotifications();
 });
+
+function setUserState(user){
+  const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+    
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Update response:", data);
+  })
+  .catch((error) => {
+    console.log("Something went wrong updating message:", error);
+  });
+}
+
+function setOffline(){
+
+}
+
+socket.on("connect",()=>{
+  let username1 = localStorage.getItem("username");
+  targetState = true
+  setUserState({userID : userID, username : username1, targetState: targetState});
+})
+
+socket.on("disconnect",()=>{
+  socket.emit("user-disconection",{
+    username: localStorage.getItem("username"),userID:localStorage.getItem("userID"), targetState : false
+  })
+})
 
 function fetchMessages() {
   const url = "http://localhost:16082/messages/getMessages";
@@ -3193,7 +3234,7 @@ socket.on("chat-focused", (data)=>{
 
 //------------------------------------------------------------------------------------------------------------------------//
 function fetchAllUsers() {
-  const url = "http://localhost:16082/auth/fetchAllUsers";
+  const url = "http://localhost:16082/userStatus/getOnlineUsers";
 
   fetch(url)
     .then((response) => response.json())
@@ -3232,15 +3273,20 @@ function filterMessagesPerUser(value) {
 function loadUsersIntoChat() {
   fetchAllUsers();
   const userList = JSON.parse(localStorage.getItem("userList"));
-  console.log("JSON OBJECT:", userList);
+  const currentUser = localStorage.getItem("userID")
+  //console.log("JSON OBJECT:", userList);
   const chatSelect = recipientInput;
 
   //Por cada usuário acrescenta uma opção
   userList.forEach((user) => {
-    const option = document.createElement("option");
-    option.value = user._id;
-    option.text = user.username;
-    chatSelect.appendChild(option);
+    // Mostrar os usuários online e que não sejam o próprio
+    if(user.userID != currentUser && user.isOnline == true){
+      const option = document.createElement("option");
+      option.value = user.userID;
+      option.text = user.username;
+      chatSelect.appendChild(option);
+    }
+    
   });
 }
 
