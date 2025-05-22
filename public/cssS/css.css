@@ -2035,7 +2035,13 @@ label {
   display: block;
   text-align: left;
 }
+
+
 /* Estilos do Chat */
+#chat-logo{
+  width: 20px;
+}
+
 #chat-container {
   position: fixed;
   bottom: 0;
@@ -2043,9 +2049,10 @@ label {
   width: 350px;
   background: #f5f5f5;
   border: 1px solid #ddd;
-  border-radius: 5px 5px 0 0;
+  border-radius: 10px 10px 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  overflow: hidden;
 }
 
 #chat-header {
@@ -2072,12 +2079,29 @@ label {
 }
 #chat-toggle {
   margin-bottom: 0;
+  height: 10px;
+  display: none;
+  
 }
 #send-message-button {
   margin-bottom: 0;
+  border: none;
+  border-radius: 5px;
+  width:75px;
 }
+
+#send-message-button:hover{
+  border: 1px red;
+  border-radius: 5px;
+  background-color: white;
+  color: red;
+  transition: 0.5s;
+}
+
 #chat-form {
   display: flex;
+  align-items: center;
+  width: 100%;
 }
 .chat-message {
   margin-bottom: 10px;
@@ -2099,21 +2123,28 @@ label {
 
 #chat-input-area {
   display: flex;
+  justify-content: center;
   padding: 8px;
-  background: #f5f5f5;
+  background: #D9D9D9;
 }
 
 #chat-message-input {
   flex-grow: 1;
   padding: 8px;
   margin-right: 5px;
+  border: none;
+  border-radius: 5px
 }
 
 #chat-recipient-select {
   width: 100%;
   height: 20%;
-  margin-bottom: 5px;
+  margin: 5px;
   padding: 5px;
+  color: white;
+  background-color: #464646;
+  text-align: center;
+  border: none;
 }
 
 /* Estado minimizado */
@@ -2184,11 +2215,13 @@ label {
 /* .user-list, */
 .room-list,
 .activity {
-  width: 100%;
+  width: 80%;
   min-height: 1rem;
   margin: 0 auto;
   max-width: 600px;
   padding: 0.75rem 0.25rem;
+  background-color: #ffffff;
+  margin-left: 10px;
 }
 
 .activity {
@@ -2201,14 +2234,31 @@ label {
 
 /*Para as notificações*/
 
-.notif-on{
-  background-color: red;
+/* Prioridade */
+@keyframes blinks-notification {
+  0% {
+    background-color: #464646; /* Define o ponto final da cor */
+    color: rgb(255, 255, 255);
+  }
+
+  100% {
+    background-color: orangered; /* Define o ponto inicial da cor */
+    color: rgb(255, 255, 255);
+  }
 }
+
+
+.notif-on{
+  background-color: #E30613;
+}
+
+
 
 .notif-general{
   background-color: #e29032; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
-  animation: blinks 2s infinite;
+  border:none;
+  border-radius: 5px;
   transition-duration: 1s infinite;
-  animation: blinks 1s infinite !important;
+  animation: blinks-notification 1s infinite !important;
 }

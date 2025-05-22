@@ -103,6 +103,7 @@ mongoose
       socket.on("disconnect", () => {
         user.userState = false;
         setUserState(user);
+        socket.emit("list-refresh");
         console.log("Client disconnected:", user.userState);
         ;
       });

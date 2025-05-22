@@ -2986,6 +2986,11 @@ document.addEventListener("DOMContentLoaded", () => {
   userID = localStorage.getItem("userID");
   chatDisplay = document.querySelector("#chat-messages");
   recipientInput = document.querySelector("#chat-recipient-select");
+  recipientInput.addEventListener("click",function(e){
+    e.stopPropagation();
+  })
+
+  // Impede que ao clicar na escolha do usuário para enviar mensagem, a janela colapse
   currentChatSelection = JSON.parse(
     localStorage.getItem("currentChatSelection")
   );
@@ -3003,6 +3008,13 @@ document.addEventListener("DOMContentLoaded", () => {
       userID: userID,
     });
   });
+
+
+  // Refresh da lista de usuários
+
+socket.on("list-refresh",loadUsersIntoChat()); 
+
+
 
   // Quando o alvo da mensagem é mudado
   recipientInput.addEventListener("click", function(){
@@ -3276,7 +3288,9 @@ function loadUsersIntoChat() {
   const currentUser = localStorage.getItem("userID")
   //console.log("JSON OBJECT:", userList);
   const chatSelect = recipientInput;
-
+  while(recipientInput.firstChild && recipientInput.lastChild.value!="all"){
+    recipientInput.removeChild(recipientInput.lastChild);  
+  }qs
   //Por cada usuário acrescenta uma opção
   userList.forEach((user) => {
     // Mostrar os usuários online e que não sejam o próprio
@@ -3297,12 +3311,14 @@ function loadChatState() {
   const messageContainer = document.getElementById("chat-messages");
   const chatSpan = document.getElementById("chat-span");
   const chatImage = document.getElementById("chat-image");
+  const select = document.getElementById("chat-recipient-select");
 
   if (chatState == "true") {
     chat.classList.remove("minimized");
     minimizeIcon.classList.remove("hidden");
     chatSpan.classList.remove("hidden");
     chatImage.classList.add("hidden");
+    select.classList.remove("hidden");
   } else {
     // Dar scroll para as mensagens recentes automaticamente (antes de minimizar)
     messageContainer.scrollTo(0, messageContainer.scrollHeight);
@@ -3310,6 +3326,7 @@ function loadChatState() {
     minimizeIcon.classList.add("hidden");
     chatSpan.classList.add("hidden");
     chatImage.classList.remove("hidden");
+    select.classList.add("hidden");
   }
 }
 
@@ -3319,6 +3336,7 @@ function chatToggle() {
   const chatSpan = document.getElementById("chat-span");
   const chatImage = document.getElementById("chat-image");
   const notifCounter = document.getElementById("notification-counter")
+  const select = document.getElementById("chat-recipient-select");
 
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
@@ -3329,11 +3347,13 @@ function chatToggle() {
     }
     chatSpan.classList.add("hidden");
     chatImage.classList.remove("hidden");
+    select.classList.add("hidden");
     chatState = false;
   } else {
     chatSpan.classList.remove("hidden");
     notifCounter.classList.add("hidden")
     chatImage.classList.add("hidden");
+    select.classList.remove("hidden");
     chatState = true;
   }
   localStorage.setItem("chatState", chatState);
@@ -3530,7 +3550,7 @@ socket.on("activity", (activityDataRaw) => {
   if (activityData.senderID != userID) {
     if (recipientInput.value == "all" && activityData.recipient == "all") {
       activity.textContent = `${activityData.name} is typing...`;
-    } else if (recipientInput.value == activityData.senderID) {
+    } else if (recipientInput.value == activityData.senderID && activityData.recipient !="all") {
       activity.textContent = `${activityData.name} is typing...`;
     }
   }
