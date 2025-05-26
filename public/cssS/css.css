@@ -2067,6 +2067,7 @@ label {
 
 #chat-content {
   display: block;
+  background-color: white;
 }
 
 #chat-messages {
@@ -2164,7 +2165,7 @@ label {
 
 .post {
   background-color: #eee;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 0 0 0.25rem;
   margin: 0.5rem;
   overflow: hidden;
@@ -2212,6 +2213,10 @@ label {
   padding: 0.25rem 0.5rem;
 }
 
+.offline-user{
+  color: grey;
+}
+
 /* .user-list, */
 .room-list,
 .activity {
@@ -2222,6 +2227,7 @@ label {
   padding: 0.75rem 0.25rem;
   background-color: #ffffff;
   margin-left: 10px;
+  margin-right: 0px;
 }
 
 .activity {

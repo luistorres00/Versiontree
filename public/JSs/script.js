@@ -3012,18 +3012,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Refresh da lista de usuários
 
-socket.on("list-refresh",loadUsersIntoChat()); 
+socket.on("list-refresh",()=>{
+  loadUsersIntoChat();
+  console.log("Executed refresh");
+}); 
 
 
 
-  // Quando o alvo da mensagem é mudado
+  //Quando a caixa de texto é pressionada depois de abrir uma mensagem (marcar o estado como "lida");
   recipientInput.addEventListener("click", function(){
     recipientInput.classList.remove("notif-general");
   });
+
+
+  // Quando o alvo da mensagem é mudado
   recipientInput.addEventListener("change", function () {
     fetchMessages();
     setTimeout(() => {
+      //Filtrar as mensagens em acordância com o usuário selecionado
       filterMessagesPerUser(recipientInput.value);
+      
+      //Guardar a seleção na eventualidade de um refresh
       localStorage.setItem(
         "currentChatSelection",
         JSON.stringify({
@@ -3031,21 +3040,24 @@ socket.on("list-refresh",loadUsersIntoChat());
         })
       );
       
+      // Atualizar o estado das mensages (para vistas);
       const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
       allMessages.forEach((message)=>{
-        //console.log("UserID: ",message.userID,"\nSender.ID: ",data.senderID,"\nRecipient: ",message.recipient,"\nCurrent ID: ",data.userID);
        
         if(message.userID == recipientInput.value && message.recipient == userID){
-           console.log("Entrou no primeiro ciclo");
           updateSeenStatus(message);
         }
       });
+
+
+      // Limpar as notificações respetivas ao usuário que foi visto
       const data = {senderID: recipientInput.value, userID : userID};
       toggleNotifications(data,"Clear");
         }, 100);
       });
 
-  // Eventlisterners
+
+  // Eventlisterners de atividade (para o "Is typing...")
   chatForm.addEventListener("submit", sendMessage);
   msgInput.addEventListener("keypress", () => {
     const activityData = JSON.stringify({
@@ -3079,6 +3091,8 @@ socket.on("list-refresh",loadUsersIntoChat());
   checkNotifications();
 });
 
+
+// Verificar se o user está online ou não
 function setUserState(user){
   const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`
 
@@ -3099,22 +3113,23 @@ function setUserState(user){
   });
 }
 
-function setOffline(){
 
-}
-
+// Quando connecta, mudar o estado do usuário
 socket.on("connect",()=>{
   let username1 = localStorage.getItem("username");
   targetState = true
   setUserState({userID : userID, username : username1, targetState: targetState});
 })
 
+// Quando desconecta, mudar o estado do usuário
 socket.on("disconnect",()=>{
   socket.emit("user-disconection",{
     username: localStorage.getItem("username"),userID:localStorage.getItem("userID"), targetState : false
   })
 })
 
+
+// Ir buscar todas as mensagens
 function fetchMessages() {
   const url = "http://localhost:16082/messages/getMessages";
 
@@ -3127,6 +3142,9 @@ function fetchMessages() {
     });
 }
 
+
+
+// Mudar a mensagem para "lida"
 function updateSeenStatus(message){
   console.log("Entered updateSeenStatus");
   console.log("Message", message.text);
@@ -3151,6 +3169,8 @@ function updateSeenStatus(message){
 
 // ------------------------------------------------NOTIFICATIONS---------------------------------------------------------------//
 
+
+// Lógica para adicionar o número de notificações
 function addNotificationCounter(number){
   console.log("Entered function counter");
   const notifCounter = document.getElementById("notification-counter");
@@ -3162,6 +3182,7 @@ function addNotificationCounter(number){
     
 }
 
+// Verificar se o usuário tem notificações
 function checkNotifications(){
   fetchMessages();
   setTimeout(()=>{
@@ -3185,6 +3206,7 @@ function checkNotifications(){
   
 }
 
+// Lóigica para adicionar ou remover as notificações
 function toggleNotifications(data, value, notificationsSeen){
 
   //Value -> "Add" ou "Clear"
@@ -3245,13 +3267,27 @@ socket.on("chat-focused", (data)=>{
 })
 
 //------------------------------------------------------------------------------------------------------------------------//
+
+// Ir buscar todos os usuários (Alterado para apenas os users online)
+
 function fetchAllUsers() {
-  const url = "http://localhost:16082/userStatus/getOnlineUsers";
+  const url = "http://localhost:16082/auth/fetchAllUsers";
 
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
       localStorage.setItem("userList", JSON.stringify(data));
+    });
+}
+
+// Ir buscar os users que estão online
+function fetchOnlineUsers(){
+  const url = "http://localhost:16082/userStatus/getOnlineUsers";
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem("userListOnline", JSON.stringify(data));
     });
 }
 
@@ -3284,26 +3320,49 @@ function filterMessagesPerUser(value) {
 // Carregar os utilizadors da bd para o menu select do chat
 function loadUsersIntoChat() {
   fetchAllUsers();
-  const userList = JSON.parse(localStorage.getItem("userList"));
-  const currentUser = localStorage.getItem("userID")
-  //console.log("JSON OBJECT:", userList);
-  const chatSelect = recipientInput;
-  while(recipientInput.firstChild && recipientInput.lastChild.value!="all"){
-    recipientInput.removeChild(recipientInput.lastChild);  
-  }qs
-  //Por cada usuário acrescenta uma opção
-  userList.forEach((user) => {
-    // Mostrar os usuários online e que não sejam o próprio
-    if(user.userID != currentUser && user.isOnline == true){
-      const option = document.createElement("option");
-      option.value = user.userID;
-      option.text = user.username;
-      chatSelect.appendChild(option);
-    }
+  fetchOnlineUsers();
+  setTimeout(()=>{
+    const userList = JSON.parse(localStorage.getItem("userList"));
+    const onlineUsers = JSON.parse(localStorage.getItem("userListOnline"));
+    console.log("Online Users:\n",onlineUsers);
+    const currentUser = localStorage.getItem("userID")
     
-  });
+    //console.log("JSON OBJECT:", userList);
+    const chatSelect = recipientInput;
+    while(recipientInput.firstChild && recipientInput.lastChild.value!="all"){
+      recipientInput.removeChild(recipientInput.lastChild);  
+    }
+    //Por cada usuário acrescenta uma opção
+    userList.forEach((user) => {
+      // Mostrar os usuários que não sejam o próprio
+      if(user._id != currentUser){
+        const option = document.createElement("option");
+        option.value = user._id;
+        option.text = user.username;
+
+        // Adicionar estilização a usuários que estejam offline
+        const checkOnlineUser = onlineUsers.find(onUser => onUser.userID == user._id);
+        console.log("Checking Online User:",checkOnlineUser);
+        if(checkOnlineUser){
+          if(checkOnlineUser.isOnline == false){
+            option.classList.add("offline-user");
+          }
+          
+        }
+
+        chatSelect.appendChild(option);
+      }
+
+      
+      
+      
+    });
+    },100)
+  
 }
 
+
+// Lógica para carregar o estado do chat entre refreshes
 function loadChatState() {
   chatState = localStorage.getItem("chatState");
   const chat = document.getElementById("chat-container");
@@ -3330,6 +3389,7 @@ function loadChatState() {
   }
 }
 
+// Função de minimizar/máximizar o chat
 function chatToggle() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
@@ -3358,6 +3418,8 @@ function chatToggle() {
   }
   localStorage.setItem("chatState", chatState);
 }
+
+
 // Carregar as mensagens para o chat
 function loadMessagesInChat(messages) {
   // Receber as mensagens e converter para objeto JSON
@@ -3439,6 +3501,7 @@ function sendMessage(e) {
   msgInput.focus();
 }
 
+// Função de adicionar mensagens á bd
 function storeMessage(dataMessage) {
   const url = "http://localhost:16082/messages/addMessage";
 
@@ -3462,6 +3525,7 @@ function storeMessage(dataMessage) {
     });
 }
 
+// Função de apagar todas as mensagens da bd (aplicada quando muda o nome da corrida)
 function deleteAllMessages() {
   const url = "http://localhost:16082/messages/deleteMessages";
 
@@ -3555,7 +3619,7 @@ socket.on("activity", (activityDataRaw) => {
     }
   }
 
-  // Clear after 3 seconds
+  // Definição do tempo de duração até o texto desaparecer 
   clearTimeout(activityTimer);
   activityTimer = setTimeout(() => {
     activity.textContent = "";

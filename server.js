@@ -76,6 +76,10 @@ mongoose
       const { username, userID } = socket.handshake.auth;
       const user = {username: username, userID: userID, userState: true};
       setUserState(user);
+      setTimeout(()=>{
+        socket.broadcast.emit("list-refresh");
+      },100)
+      
 
       //socket.emit("message", buildMsg("System", "Bem vindo ao chat WFR!"));
 
@@ -103,7 +107,7 @@ mongoose
       socket.on("disconnect", () => {
         user.userState = false;
         setUserState(user);
-        socket.emit("list-refresh");
+        socket.broadcast.emit("list-refresh");
         console.log("Client disconnected:", user.userState);
         ;
       });
@@ -184,7 +188,7 @@ function setUserState(user){
     console.log("Update response:", data);
   })
   .catch((error) => {
-    console.log("Something went wrong updating message:", error);
+    console.log("Something went wrong updating status:", error);
   });
 }
 
