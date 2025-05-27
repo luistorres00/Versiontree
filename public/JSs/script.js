@@ -3368,23 +3368,23 @@ function loadChatState() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
   const messageContainer = document.getElementById("chat-messages");
-  const chatSpan = document.getElementById("chat-span");
   const chatImage = document.getElementById("chat-image");
+  const chatLogo = document.getElementById("chat-logo");
   const select = document.getElementById("chat-recipient-select");
 
   if (chatState == "true") {
     chat.classList.remove("minimized");
     minimizeIcon.classList.remove("hidden");
-    chatSpan.classList.remove("hidden");
     chatImage.classList.add("hidden");
+    chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
   } else {
     // Dar scroll para as mensagens recentes automaticamente (antes de minimizar)
     messageContainer.scrollTo(0, messageContainer.scrollHeight);
     chat.classList.add("minimized");
     minimizeIcon.classList.add("hidden");
-    chatSpan.classList.add("hidden");
     chatImage.classList.remove("hidden");
+    chatLogo.classList.add("hidden");
     select.classList.add("hidden");
   }
 }
@@ -3393,8 +3393,8 @@ function loadChatState() {
 function chatToggle() {
   const chat = document.getElementById("chat-container");
   const minimizeIcon = document.getElementById("chat-toggle");
-  const chatSpan = document.getElementById("chat-span");
   const chatImage = document.getElementById("chat-image");
+  const chatLogo = document.getElementById("chat-logo");
   const notifCounter = document.getElementById("notification-counter")
   const select = document.getElementById("chat-recipient-select");
 
@@ -3405,14 +3405,14 @@ function chatToggle() {
     if(notifCounter.textContent!="0"){
       notifCounter.classList.remove("hidden");
     }
-    chatSpan.classList.add("hidden");
     chatImage.classList.remove("hidden");
+    chatLogo.classList.add("hidden");
     select.classList.add("hidden");
     chatState = false;
   } else {
-    chatSpan.classList.remove("hidden");
     notifCounter.classList.add("hidden")
     chatImage.classList.add("hidden");
+    chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
     chatState = true;
   }

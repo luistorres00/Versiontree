@@ -2056,7 +2056,7 @@ label {
 }
 
 #chat-header {
-  background: #333;
+  background: #2d2d2d;
   color: white;
   padding: 8px 12px;
   display: flex;
@@ -2146,6 +2146,7 @@ label {
   background-color: #464646;
   text-align: center;
   border: none;
+  border-radius: 5px;
 }
 
 /* Estado minimizado */
@@ -2268,3 +2269,8 @@ label {
   transition-duration: 1s infinite;
   animation: blinks-notification 1s infinite !important;
 }
+
+#chat-logo{
+  width: 30px;
+}
+
