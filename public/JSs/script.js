@@ -159,7 +159,8 @@ document.addEventListener("keydown", function (e) {
     popup2Aberto ||
     popupNumpadPasswordAberto ||
     popupRodaDentada ||
-    popupConfiguracoes
+    popupConfiguracoes ||
+    campoPesquisa
   ) {
     return;
   }
@@ -2951,10 +2952,9 @@ const socket = io("https://localhost:443", {
   // Passar as informações do usuário por handshake (no auth) para o servidor
   auth: {
     username: localStorage.getItem("username"),
-    userID: localStorage.getItem("userID")
-  }
+    userID: localStorage.getItem("userID"),
+  },
 });
-
 
 // Variáveis
 
@@ -2969,11 +2969,10 @@ let historicoMensagens;
 let chatState;
 let recipientInput;
 let currentChatSelection;
-let notificationCounter=0;
+let notificationCounter = 0;
 
 // É necessário esperar que toda a página esteja carregada
 document.addEventListener("DOMContentLoaded", () => {
-  
   // Ids
   msgInput = document.querySelector("#chat-message-input");
   chatForm = document.querySelector("#chat-form");
@@ -2986,9 +2985,9 @@ document.addEventListener("DOMContentLoaded", () => {
   userID = localStorage.getItem("userID");
   chatDisplay = document.querySelector("#chat-messages");
   recipientInput = document.querySelector("#chat-recipient-select");
-  recipientInput.addEventListener("click",function(e){
+  recipientInput.addEventListener("click", function (e) {
     e.stopPropagation();
-  })
+  });
 
   // Impede que ao clicar na escolha do usuário para enviar mensagem, a janela colapse
   currentChatSelection = JSON.parse(
@@ -3001,29 +3000,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Foi necessário repetir para poder dar update
   msgInput.addEventListener("focus", () => {
     currentChatSelection = JSON.parse(
-    localStorage.getItem("currentChatSelection")
-  );
+      localStorage.getItem("currentChatSelection")
+    );
     socket.emit("chat-focused", {
       senderID: currentChatSelection.value,
       userID: userID,
     });
   });
 
-
   // Refresh da lista de usuários
 
-socket.on("list-refresh",()=>{
-  loadUsersIntoChat();
-  console.log("Executed refresh");
-}); 
-
-
-
-  //Quando a caixa de texto é pressionada depois de abrir uma mensagem (marcar o estado como "lida");
-  recipientInput.addEventListener("click", function(){
-    recipientInput.classList.remove("notif-general");
+  socket.on("list-refresh", () => {
+    loadUsersIntoChat();
+    console.log("Executed refresh");
   });
 
+  //Quando a caixa de texto é pressionada depois de abrir uma mensagem (marcar o estado como "lida");
+  recipientInput.addEventListener("click", function () {
+    recipientInput.classList.remove("notif-general");
+  });
 
   // Quando o alvo da mensagem é mudado
   recipientInput.addEventListener("change", function () {
@@ -3031,7 +3026,7 @@ socket.on("list-refresh",()=>{
     setTimeout(() => {
       //Filtrar as mensagens em acordância com o usuário selecionado
       filterMessagesPerUser(recipientInput.value);
-      
+
       //Guardar a seleção na eventualidade de um refresh
       localStorage.setItem(
         "currentChatSelection",
@@ -3039,23 +3034,25 @@ socket.on("list-refresh",()=>{
           value: recipientInput.value,
         })
       );
-      
+
       // Atualizar o estado das mensages (para vistas);
-      const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
-      allMessages.forEach((message)=>{
-       
-        if(message.userID == recipientInput.value && message.recipient == userID){
+      const allMessages = JSON.parse(
+        localStorage.getItem("historicoMensagens")
+      );
+      allMessages.forEach((message) => {
+        if (
+          message.userID == recipientInput.value &&
+          message.recipient == userID
+        ) {
           updateSeenStatus(message);
         }
       });
 
-
       // Limpar as notificações respetivas ao usuário que foi visto
-      const data = {senderID: recipientInput.value, userID : userID};
-      toggleNotifications(data,"Clear");
-        }, 100);
-      });
-
+      const data = { senderID: recipientInput.value, userID: userID };
+      toggleNotifications(data, "Clear");
+    }, 100);
+  });
 
   // Eventlisterners de atividade (para o "Is typing...")
   chatForm.addEventListener("submit", sendMessage);
@@ -3091,10 +3088,9 @@ socket.on("list-refresh",()=>{
   checkNotifications();
 });
 
-
 // Verificar se o user está online ou não
-function setUserState(user){
-  const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`
+function setUserState(user) {
+  const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`;
 
   fetch(url, {
     method: "POST",
@@ -3102,32 +3098,35 @@ function setUserState(user){
       "Content-Type": "application/json",
     },
     body: JSON.stringify(user),
-    
   })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Update response:", data);
-  })
-  .catch((error) => {
-    console.log("Something went wrong updating message:", error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Update response:", data);
+    })
+    .catch((error) => {
+      console.log("Something went wrong updating message:", error);
+    });
 }
 
-
 // Quando connecta, mudar o estado do usuário
-socket.on("connect",()=>{
+socket.on("connect", () => {
   let username1 = localStorage.getItem("username");
-  targetState = true
-  setUserState({userID : userID, username : username1, targetState: targetState});
-})
+  targetState = true;
+  setUserState({
+    userID: userID,
+    username: username1,
+    targetState: targetState,
+  });
+});
 
 // Quando desconecta, mudar o estado do usuário
-socket.on("disconnect",()=>{
-  socket.emit("user-disconection",{
-    username: localStorage.getItem("username"),userID:localStorage.getItem("userID"), targetState : false
-  })
-})
-
+socket.on("disconnect", () => {
+  socket.emit("user-disconection", {
+    username: localStorage.getItem("username"),
+    userID: localStorage.getItem("userID"),
+    targetState: false,
+  });
+});
 
 // Ir buscar todas as mensagens
 function fetchMessages() {
@@ -3142,10 +3141,8 @@ function fetchMessages() {
     });
 }
 
-
-
 // Mudar a mensagem para "lida"
-function updateSeenStatus(message){
+function updateSeenStatus(message) {
   console.log("Entered updateSeenStatus");
   console.log("Message", message.text);
   const url = `http://localhost:16082/messages/setSeen/${message._id}`;
@@ -3155,116 +3152,118 @@ function updateSeenStatus(message){
     headers: {
       "Content-Type": "application/json",
     },
-    
   })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Update response:", data);
-  })
-  .catch((error) => {
-    console.log("Something went wrong updating message:", error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Update response:", data);
+    })
+    .catch((error) => {
+      console.log("Something went wrong updating message:", error);
+    });
 }
-
 
 // ------------------------------------------------NOTIFICATIONS---------------------------------------------------------------//
 
-
 // Lógica para adicionar o número de notificações
-function addNotificationCounter(number){
+function addNotificationCounter(number) {
   console.log("Entered function counter");
   const notifCounter = document.getElementById("notification-counter");
   const chat = document.getElementById("chat-container");
-  if(chat.classList.contains("minimized")){
+  if (chat.classList.contains("minimized")) {
     notifCounter.classList.remove("hidden");
     notifCounter.textContent = number;
   }
-    
 }
 
 // Verificar se o usuário tem notificações
-function checkNotifications(){
+function checkNotifications() {
   fetchMessages();
-  setTimeout(()=>{
+  setTimeout(() => {
     const messages = JSON.parse(localStorage.getItem("historicoMensagens"));
     const userID = localStorage.getItem("userID");
     let notificationChecker = false;
     notificationCounter = 0;
-    messages.forEach((message)=>{
-
-      if(message.recipient == userID && message.seen==false){
+    messages.forEach((message) => {
+      if (message.recipient == userID && message.seen == false) {
         notificationChecker = true;
-        notificationCounter ++;
-        toggleNotifications(message,"Add");
+        notificationCounter++;
+        toggleNotifications(message, "Add");
       }
-    })
-    if(notificationChecker){
+    });
+    if (notificationChecker) {
       addNotificationCounter(notificationCounter);
     }
-  },50)
-  
-  
+  }, 50);
 }
 
 // Lóigica para adicionar ou remover as notificações
-function toggleNotifications(data, value, notificationsSeen){
-
+function toggleNotifications(data, value, notificationsSeen) {
   //Value -> "Add" ou "Clear"
-  console.log("Data:",data);
-      // Dar reset ao marcador de notificação
-      const currentChat = document.getElementById("chat-recipient-select").value
-      const userID = localStorage.getItem("userID");
-      const senderID = data.senderID || data.userID;
-      const recipient = data.recipient || data.userID;
-      const listaUsers = document.getElementById("chat-recipient-select");
-      const notificatioCounter = document.getElementById("notification-counter");
+  console.log("Data:", data);
+  // Dar reset ao marcador de notificação
+  const currentChat = document.getElementById("chat-recipient-select").value;
+  const userID = localStorage.getItem("userID");
+  const senderID = data.senderID || data.userID;
+  const recipient = data.recipient || data.userID;
+  const listaUsers = document.getElementById("chat-recipient-select");
+  const notificatioCounter = document.getElementById("notification-counter");
 
-      for(i=0; i<= listaUsers.options.length-1; i++){
-        if(listaUsers.options[i].value == senderID && recipient == userID && currentChat != senderID){
-          if(value == "Add"){
-            listaUsers.classList.add("notif-general");
-            listaUsers.options[i].classList.add("notif-on");
-            break
-          }   
-        }else if(listaUsers.options[i].value == senderID && recipient == userID && currentChat == senderID){
-          if (value == "Clear"){
-            listaUsers.classList.remove("notif-general");
-            listaUsers.options[i].classList.remove("notif-on");
-            if(notificationsSeen){
-              notificatioCounter.textContent = parseInt(notificatioCounter.textContent - notificationsSeen)<0 ? "" : parseInt(notificatioCounter.textContent - notificationsSeen);
-            }
-            
-            break
-          }
-        }
+  for (i = 0; i <= listaUsers.options.length - 1; i++) {
+    if (
+      listaUsers.options[i].value == senderID &&
+      recipient == userID &&
+      currentChat != senderID
+    ) {
+      if (value == "Add") {
+        listaUsers.classList.add("notif-general");
+        listaUsers.options[i].classList.add("notif-on");
+        break;
       }
+    } else if (
+      listaUsers.options[i].value == senderID &&
+      recipient == userID &&
+      currentChat == senderID
+    ) {
+      if (value == "Clear") {
+        listaUsers.classList.remove("notif-general");
+        listaUsers.options[i].classList.remove("notif-on");
+        if (notificationsSeen) {
+          notificatioCounter.textContent =
+            parseInt(notificatioCounter.textContent - notificationsSeen) < 0
+              ? ""
+              : parseInt(notificatioCounter.textContent - notificationsSeen);
+        }
 
-    
-  
+        break;
+      }
+    }
+  }
 }
 
 // Quando recebe notificação
-socket.on("notification-set",(data)=>{
+socket.on("notification-set", (data) => {
   checkNotifications();
   toggleNotifications(data, "Add");
-})
-
+});
 
 // Quando a caixa é selecionada, apaga notificação
-socket.on("chat-focused", (data)=>{
-  
- const  allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
- let notificationsSeen= 0;
-  allMessages.forEach((message)=>{
+socket.on("chat-focused", (data) => {
+  const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+  let notificationsSeen = 0;
+  allMessages.forEach((message) => {
     //console.log("UserID: ",message.userID,"\nSender.ID: ",data.senderID,"\nRecipient: ",message.recipient,"\nCurrent ID: ",data.userID);
-    if(message.userID == data.senderID && message.recipient == data.userID && message.seen==false){
+    if (
+      message.userID == data.senderID &&
+      message.recipient == data.userID &&
+      message.seen == false
+    ) {
       updateSeenStatus(message);
       notificationsSeen++;
     }
   });
   fetchMessages();
-  toggleNotifications(data,"Clear",notificationsSeen);
-})
+  toggleNotifications(data, "Clear", notificationsSeen);
+});
 
 //------------------------------------------------------------------------------------------------------------------------//
 
@@ -3281,7 +3280,7 @@ function fetchAllUsers() {
 }
 
 // Ir buscar os users que estão online
-function fetchOnlineUsers(){
+function fetchOnlineUsers() {
   const url = "http://localhost:16082/userStatus/getOnlineUsers";
 
   fetch(url)
@@ -3321,46 +3320,44 @@ function filterMessagesPerUser(value) {
 function loadUsersIntoChat() {
   fetchAllUsers();
   fetchOnlineUsers();
-  setTimeout(()=>{
+  setTimeout(() => {
     const userList = JSON.parse(localStorage.getItem("userList"));
     const onlineUsers = JSON.parse(localStorage.getItem("userListOnline"));
-    console.log("Online Users:\n",onlineUsers);
-    const currentUser = localStorage.getItem("userID")
-    
+    console.log("Online Users:\n", onlineUsers);
+    const currentUser = localStorage.getItem("userID");
+
     //console.log("JSON OBJECT:", userList);
     const chatSelect = recipientInput;
-    while(recipientInput.firstChild && recipientInput.lastChild.value!="all"){
-      recipientInput.removeChild(recipientInput.lastChild);  
+    while (
+      recipientInput.firstChild &&
+      recipientInput.lastChild.value != "all"
+    ) {
+      recipientInput.removeChild(recipientInput.lastChild);
     }
     //Por cada usuário acrescenta uma opção
     userList.forEach((user) => {
       // Mostrar os usuários que não sejam o próprio
-      if(user._id != currentUser){
+      if (user._id != currentUser) {
         const option = document.createElement("option");
         option.value = user._id;
         option.text = user.username;
 
         // Adicionar estilização a usuários que estejam offline
-        const checkOnlineUser = onlineUsers.find(onUser => onUser.userID == user._id);
-        console.log("Checking Online User:",checkOnlineUser);
-        if(checkOnlineUser){
-          if(checkOnlineUser.isOnline == false){
+        const checkOnlineUser = onlineUsers.find(
+          (onUser) => onUser.userID == user._id
+        );
+        console.log("Checking Online User:", checkOnlineUser);
+        if (checkOnlineUser) {
+          if (checkOnlineUser.isOnline == false) {
             option.classList.add("offline-user");
           }
-          
         }
 
         chatSelect.appendChild(option);
       }
-
-      
-      
-      
     });
-    },100)
-  
+  }, 100);
 }
-
 
 // Lógica para carregar o estado do chat entre refreshes
 function loadChatState() {
@@ -3395,14 +3392,14 @@ function chatToggle() {
   const minimizeIcon = document.getElementById("chat-toggle");
   const chatImage = document.getElementById("chat-image");
   const chatLogo = document.getElementById("chat-logo");
-  const notifCounter = document.getElementById("notification-counter")
+  const notifCounter = document.getElementById("notification-counter");
   const select = document.getElementById("chat-recipient-select");
 
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
 
   if (chat.classList.contains("minimized")) {
-    if(notifCounter.textContent!="0"){
+    if (notifCounter.textContent != "0") {
       notifCounter.classList.remove("hidden");
     }
     chatImage.classList.remove("hidden");
@@ -3410,7 +3407,7 @@ function chatToggle() {
     select.classList.add("hidden");
     chatState = false;
   } else {
-    notifCounter.classList.add("hidden")
+    notifCounter.classList.add("hidden");
     chatImage.classList.add("hidden");
     chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
@@ -3418,7 +3415,6 @@ function chatToggle() {
   }
   localStorage.setItem("chatState", chatState);
 }
-
 
 // Carregar as mensagens para o chat
 function loadMessagesInChat(messages) {
@@ -3493,7 +3489,10 @@ function sendMessage(e) {
       recipient: recipientInput.value,
     };
     socket.emit("message", messageData);
-    socket.emit("notification-set",{senderID: userID, recipient: messageData.recipient})
+    socket.emit("notification-set", {
+      senderID: userID,
+      recipient: messageData.recipient,
+    });
     // Store immediately after emitting
     storeMessage(messageData);
     msgInput.value = "";
@@ -3545,13 +3544,13 @@ function deleteAllMessages() {
 
 // A espera que o evento "message" seja emitido
 socket.on("message", (data) => {
-
   const currentChat = document.getElementById("chat-recipient-select").value;
 
   if (data.recipient == "all" && recipientInput.value == "all") {
   } else if (
     ((data.recipient == localStorage.getItem("userID") &&
-      data.recipient != "all" && data.userID == currentChat) ||
+      data.recipient != "all" &&
+      data.userID == currentChat) ||
       (data.userID == localStorage.getItem("userID") &&
         data.recipient != "all")) &&
     document.querySelector("#chat-recipient-select").value != "all"
@@ -3614,12 +3613,15 @@ socket.on("activity", (activityDataRaw) => {
   if (activityData.senderID != userID) {
     if (recipientInput.value == "all" && activityData.recipient == "all") {
       activity.textContent = `${activityData.name} is typing...`;
-    } else if (recipientInput.value == activityData.senderID && activityData.recipient !="all") {
+    } else if (
+      recipientInput.value == activityData.senderID &&
+      activityData.recipient != "all"
+    ) {
       activity.textContent = `${activityData.name} is typing...`;
     }
   }
 
-  // Definição do tempo de duração até o texto desaparecer 
+  // Definição do tempo de duração até o texto desaparecer
   clearTimeout(activityTimer);
   activityTimer = setTimeout(() => {
     activity.textContent = "";
