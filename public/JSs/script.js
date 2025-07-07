@@ -21,6 +21,10 @@ let campoPesquisa = false;
 //Verificar se o campo de chat esta ativo
 let campoChat = false;
 
+//Verificar se campos de inserção estão ativos
+let campoCamera = false;
+let campoTurn = false;
+
 //Variáveis de configuração (Settings)
 
 let timeRestriction = true;
@@ -135,6 +139,7 @@ function getLastStartedRace() {
 let cameraInputBuffer = "";
 let horaFixada = "";
 let valorCameraBackup = ""; // 🔹 Guarda o valor temporário do cameraInput
+let secondInputLock = false;
 
 // Captura eventos de teclado
 document.addEventListener("keydown", function (e) {
@@ -143,6 +148,10 @@ document.addEventListener("keydown", function (e) {
   const obsInput = document.getElementById("obsInput");
   const curvaInput = document.getElementById("curvaInput");
   const maxCurvas = parseInt(localStorage.getItem("numCurvasBD"), 10) || 19;
+
+  cameraInput.addEventListener("focus", function () {
+    campoCamera = true;
+  });
 
   // 🔹 Se o usuário está editando um campo, ignorar entrada numérica no cameraInput
   if (
@@ -166,16 +175,25 @@ document.addEventListener("keydown", function (e) {
   }
 
   // 🔹 Se um número for pressionado
-  if (e.key >= "0" && e.key <= "9" && !campoChat) {
+  if (e.key >= "0" && e.key <= "9" && !campoChat && !campoCamera) {
     if (cameraInputBuffer === "") {
       horaFixada = obterHoraAtual();
     }
 
     cameraInputBuffer += e.key;
 
+    console.log("Input buffer: ", cameraInputBuffer);
     if (parseInt(cameraInputBuffer, 10) > maxCurvas) {
       cameraInputBuffer = String(maxCurvas);
     }
+
+    cameraInput.addEventListener("focusout", function () {
+      //Verificar que a linha não ultirapassa o máximo em Camaras
+      if (parseInt(cameraInput.value, 10) > maxCurvas) {
+        cameraInputBuffer = String(maxCurvas);
+        cameraInput.value = String(maxCurvas);
+      }
+    });
 
     // 🔹 Atualiza o campo da câmera
     if (cameraInput) {
@@ -252,6 +270,7 @@ document.addEventListener("keydown", function (e) {
   // 🔹 Fechar popups ao pressionar ESC
   if (e.key === "Escape") {
     fecharPopupIndividual();
+    campoCamera = false;
   }
 });
 
