@@ -141,7 +141,7 @@ let horaFixada = "";
 let valorCameraBackup = ""; // 🔹 Guarda o valor temporário do cameraInput
 let secondInputLock = false;
 
-// Captura eventos de teclado
+// Captura eventos de teclado"
 document.addEventListener("keydown", function (e) {
   const cameraInput = document.getElementById("cameraNumber");
   const horainput = document.getElementById("horainput");
@@ -2450,11 +2450,17 @@ function obterStartOrRF(valor) {
 function adicionarCameraOrPost(opcao) {
   const cameraInput = document.getElementById("cameraNumber");
   const curvaInput = document.getElementById("curvaInput");
+  // Armazena o valor antes de limpar
 
-  if (opcao === "Turn") {
-    if (cameraInput.value.trim() !== "") {
-      valorCameraBackup = cameraInput.value; // Armazena o valor antes de limpar
-      curvaInput.value = `Turn ${cameraInput.value}`; // Transfere com "Turn"
+  if (opcao === "Turn" || opcao === "Post") {
+    if (true) {
+      if (cameraInput.value == "") {
+        valorCameraBackup = curvaInput.value.replace(/Cam |Turn |Post /g, "");
+      } else {
+        valorCameraBackup = cameraInput.value.replace(/Cam |Turn |Post /g, "");
+      }
+      curvaInput.value = "";
+      curvaInput.value = `${opcao} ${valorCameraBackup}`; // Transfere com "Turn"
       cameraInput.value = ""; // Limpa o campo da câmera
       console.log(
         `✅ Valor "${valorCameraBackup}" transferido para curvaInput com "Turn".`
@@ -2463,7 +2469,13 @@ function adicionarCameraOrPost(opcao) {
       console.warn("⚠️ Nenhum valor na câmera para transferir!");
     }
   } else if (opcao === "Camera") {
-    if (curvaInput.value.trim() !== "") {
+    if (true) {
+      if (cameraInput.value == "") {
+        valorCameraBackup = curvaInput.value.replace(/Cam |Turn |Post /g, "");
+      } else {
+        valorCameraBackup = cameraInput.value.replace(/Cam |Turn |Post /g, "");
+      }
+
       cameraInput.value = `Cam ${valorCameraBackup}`; // Restaura com "Cam"
       curvaInput.value = ""; // Limpa o campo da curva
       console.log(
