@@ -3016,11 +3016,12 @@ document.addEventListener("DOMContentLoaded", () => {
   userID = localStorage.getItem("userID");
   chatDisplay = document.querySelector("#chat-messages");
   recipientInput = document.querySelector("#chat-recipient-select");
+
+  // Impede que ao clicar na escolha do usuário para enviar mensagem, a janela colapse
   recipientInput.addEventListener("click", function (e) {
     e.stopPropagation();
   });
 
-  // Impede que ao clicar na escolha do usuário para enviar mensagem, a janela colapse
   currentChatSelection = JSON.parse(
     localStorage.getItem("currentChatSelection")
   );
@@ -3104,11 +3105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadUsersIntoChat();
 
-  // Caso exista uma seleção prévia
-  if (currentChatSelection) {
-    recipientInput.value = currentChatSelection.value;
-  }
-
   // Filta as mensagens por seleção
   filterMessagesPerUser();
 
@@ -3117,6 +3113,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Verificar notificações
   checkNotifications();
+
+  // Caso exista uma seleção prévia
+  setTimeout(() => {
+    if (currentChatSelection && currentChatSelection.value) {
+      const options = recipientInput.options;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === currentChatSelection.value) {
+          recipientInput.selectedIndex = i;
+          const event = new Event("change");
+          recipientInput.dispatchEvent(event);
+          break;
+        }
+      }
+    }
+  }, 150);
 });
 
 // Verificar se o user está online ou não
