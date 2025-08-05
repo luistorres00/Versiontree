@@ -1,3 +1,9 @@
+//- --------------- Server IP LOGIC-----------------///
+
+const serverIPs = localStorage.getItem("currentIP");
+let url = `http://${serverIPs}:16082/`;
+console.log("SERVER IP:", serverIPs);
+
 //--------------------------------------------DECLARAÇÕES VARIAVEIS---------------------------------------------------------
 
 let popupAberto = false;
@@ -37,7 +43,6 @@ let defaultSettingsBody = {
 };
 
 //Declarado URL's
-const url = "http://localhost:16082/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -48,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://localhost:16082";
+    window.location.href = `http://${serverIPs}:16082`;
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -100,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Verificação do estado das definições
 document.addEventListener("DOMContentLoaded", function () {
-  const url = "http://localhost:16082/settings/fetchSettings";
+  const url = `http://${serverIPs}:16082/settings/fetchSettings`;
 
   fetch(url)
     .then((response) => response.json())
@@ -462,7 +467,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 document.addEventListener("DOMContentLoaded", function () {
   const reportCheckbox = document.getElementById("reportCheck");
-  const nfaCheckbox = document.getElementById("nfacheck");
+  const nfaCheckbox = document.getElementById("nfaCheck");
+  const videoCheckbox = document.getElementById("videoCheck");
+  const priorityCheckbox = document.getElementById("priorityCheck");
 
   reportCheckbox.addEventListener("click", function () {
     if (this.checked && nfaCheckbox.checked) {
@@ -473,12 +480,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  videoCheckbox.addEventListener("click", function () {
+    if (this.checked && nfaCheckbox.checked) {
+      /*alert(
+        "Erro: Não é possível selecionar 'Report' e 'NFA' simultaneamente."
+      );*/
+      nfaCheckbox.checked = false; // Desmarca o checkbox "NFA"
+    }
+  });
+
+  priorityCheckbox.addEventListener("click", function () {
+    if (this.checked && nfaCheckbox.checked) {
+      /*alert(
+        "Erro: Não é possível selecionar 'Report' e 'NFA' simultaneamente."
+      );*/
+      nfaCheckbox.checked = false; // Desmarca o checkbox "NFA"
+    }
+  });
+
   nfaCheckbox.addEventListener("click", function () {
-    if (this.checked && reportCheckbox.checked) {
+    if (
+      (this.checked && reportCheckbox.checked) ||
+      (this.checked && videoCheckbox.checked) ||
+      (this.checked && priorityCheckbox.checked)
+    ) {
       /*alert(
         "Erro: Não é possível selecionar 'NFA' e 'Report' simultaneamente."
       );*/
       reportCheckbox.checked = false; // Desmarca o checkbox "Report"
+      videoCheckbox.checked = false; // Desmarca o checkbox "Video"
+      priorityCheckbox.checked = false; // Desmarca o checkbox "Priority"
     }
   });
 });
@@ -609,7 +640,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
 
-      fetch("http://localhost:16082/auth/logout", {
+      fetch(`http://${serverIPs}:16082/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -645,7 +676,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Criar entrada de settings por defeito
 function createSettings() {
-  const url = `http://localhost:16082/settings/insertSettings`;
+  const url = `http://${serverIPs}:16082/settings/insertSettings`;
   // Envia os dados atualizados para o servidor
   fetch(url, {
     method: "POST",
@@ -697,7 +728,7 @@ function atualizarSettings(currentSettings, currentValue) {
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/settings/updateSettings`;
+    const url = `http://${serverIPs}:16082/settings/updateSettings`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -759,7 +790,7 @@ function restricaoTempoToggle() {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/getData";
+  const url = `http://${serverIPs}:16082/getData`;
 
   fetch(url)
     .then((response) => response.json())
@@ -786,7 +817,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-    fetch("http://localhost:16082/addRace", {
+    fetch(`http://${serverIPs}:16082/addRace`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -809,7 +840,7 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-  fetch("http://localhost:16082/getLRace")
+  fetch(`http://${serverIPs}:16082/getLRace`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -1013,7 +1044,7 @@ function getData() {
     return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
   }
 
-  const url = "http://localhost:16082/getData";
+  const url = `http://${serverIPs}:16082/getData`;
 
   return fetch(url)
     .then((response) => response.json())
@@ -1253,7 +1284,7 @@ function enviarJson() {
   const localStorageData = localStorage.getItem("novaLinhaData");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addData";
+  const url = `http://${serverIPs}:16082/addData`;
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1357,7 +1388,7 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateData/${id}`;
+    const url = `http://${serverIPs}:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -1408,7 +1439,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id && canUserDeleteEntry(detalhes)) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://localhost:16082/dropData/${detalhes._id}`, {
+    fetch(`http://${serverIPs}:16082/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -1440,7 +1471,7 @@ function fetchUser(userID) {
     return Promise.reject("User ID not provided");
   }
 
-  return fetch(`http://localhost:16082/auth/fetchUser/${userID}`, {
+  return fetch(`http://${serverIPs}:16082/auth/fetchUser/${userID}`, {
     method: "GET",
   })
     .then((response) => {
@@ -1623,7 +1654,7 @@ function atualizarTabela(data) {
   });
 
   // Chama a função para ordenar as linhas por hora crescente
-  ordenarPorHoraCrescente(tabela.querySelectorAll("tr"));
+  ordenarPorHoraDecrescente(tabela.querySelectorAll("tr"));
 }
 
 // Função para ordenar os dados por hora crescente
@@ -1651,6 +1682,32 @@ function ordenarPorHoraCrescente(dados) {
   arrayDeDados.forEach((linha) => tabela.appendChild(linha)); // Anexa as linhas ordenadas de volta à tabela
 }
 
+// Ordenar tabela por tempos decrescentes
+
+function ordenarPorHoraDecrescente(dados) {
+  // Transforma a coleção de linhas (exceto a primeira) em um array
+  const arrayDeDados = Array.from(dados).slice(1); // Remove a linha de cabeçalho
+
+  // Ordena as linhas com base na hora
+  arrayDeDados.sort((a, b) => {
+    const horaA = a.cells[3].textContent.split(":").map(Number); // Obtém a hora da célula 3
+    const horaB = b.cells[3].textContent.split(":").map(Number);
+
+    // Compara as horas, minutos e segundos
+    if (horaA[0] !== horaB[0]) {
+      return horaB[0] - horaA[0];
+    } else if (horaA[1] !== horaB[1]) {
+      return horaB[1] - horaA[1];
+    } else {
+      return (horaB[2] || 0) - (horaA[2] || 0); // Comparação de segundos
+    }
+  });
+
+  // Reorganiza as linhas da tabela com os dados ordenados
+  const tabela = dados[0].parentElement;
+  arrayDeDados.forEach((linha) => tabela.appendChild(linha)); // Anexa as linhas ordenadas de volta à tabela
+}
+
 // Adicionada a função para limpar a tabela
 function limparTabela() {
   // Mensagem de confirmação
@@ -1660,7 +1717,7 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/dropData";
+  const url = `http://${serverIPs}:16082/dropData`;
 
   fetch(url, {
     method: "POST",
@@ -1733,7 +1790,7 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addDataNumpad";
+  const url = `http://${serverIPs}:16082/addDataNumpad`;
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1795,7 +1852,7 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateNumpad/${id}`;
+    const url = `http://${serverIPs}:16082/updateNumpad/${id}`;
     // Envia os dados atualizados para o servidor
 
     fetch(url, {
@@ -1826,7 +1883,7 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/dropDataNumpad";
+  const url = `http://${serverIPs}:16082/dropDataNumpad`;
 
   fetch(url, {
     method: "POST",
@@ -2689,11 +2746,12 @@ function updatePosition() {
   // Verifica se há dados no localStorage
   if (updatedDataString1 && updatedDataString2) {
     const updatedData1 = JSON.parse(updatedDataString1);
+    console.log("UPDATED DATA:", updatedData1);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:16082/updateData/${id}`;
+    const url = `http://${serverIPs}:16082/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -2721,7 +2779,7 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-    const url2 = `http://localhost:16082/updateData/${id2}`;
+    const url2 = `http://${serverIPs}:16082/updateData/${id2}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2799,7 +2857,7 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/getObsOptions";
+  const url = `http://${serverIPs}:16082/getObsOptions`;
 
   fetch(url)
     .then((response) => response.json())
@@ -2828,7 +2886,7 @@ function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:16082/addObsOptions";
+  const url = `http://${serverIPs}:16082/addObsOptions`;
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -2979,7 +3037,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //-------------------------CHAT FUNCTIONS --------------------------------//
 
-const socket = io("https://localhost:443", {
+const socket = io(`http://${serverIPs}:16082`, {
   // Passar as informações do usuário por handshake (no auth) para o servidor
   auth: {
     username: localStorage.getItem("username"),
@@ -3016,6 +3074,8 @@ document.addEventListener("DOMContentLoaded", () => {
   userID = localStorage.getItem("userID");
   chatDisplay = document.querySelector("#chat-messages");
   recipientInput = document.querySelector("#chat-recipient-select");
+  const chat = document.querySelector("#chat-container");
+  const messageInput = document.querySelector("#chat-message-input");
 
   // Impede que ao clicar na escolha do usuário para enviar mensagem, a janela colapse
   recipientInput.addEventListener("click", function (e) {
@@ -3072,18 +3132,26 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.getItem("historicoMensagens")
       );
       allMessages.forEach((message) => {
-        if (
-          message.userID == recipientInput.value &&
-          message.recipient == userID
-        ) {
-          updateSeenStatus(message);
+        if (!chat.classList.contains("minimized")) {
+          if (
+            message.userID == recipientInput.value &&
+            message.recipient == userID
+          ) {
+            updateSeenStatus(message, userID);
+            checkNotifications();
+          } else if (message.recipient == "all") {
+            updateSeenStatus(message, userID);
+            checkNotifications();
+          }
         }
       });
+      messageInput.focus();
 
       // Limpar as notificações respetivas ao usuário que foi visto
       const data = { senderID: recipientInput.value, userID: userID };
+      console.log("DATA SEEN EMIT:", data);
       toggleNotifications(data, "Clear");
-    }, 100);
+    }, 300);
   });
 
   // Eventlisterners de atividade (para o "Is typing...")
@@ -3132,7 +3200,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Verificar se o user está online ou não
 function setUserState(user) {
-  const url = `http://localhost:16082/userStatus/setStatus/${user.userID}`;
+  const url = `http://${serverIPs}:16082/userStatus/setStatus/${user.userID}`;
 
   fetch(url, {
     method: "POST",
@@ -3172,7 +3240,7 @@ socket.on("disconnect", () => {
 
 // Ir buscar todas as mensagens
 function fetchMessages() {
-  const url = "http://localhost:16082/messages/getMessages";
+  const url = `http://${serverIPs}:16082/messages/getMessages`;
 
   fetch(url)
     .then((response) => response.json())
@@ -3184,16 +3252,17 @@ function fetchMessages() {
 }
 
 // Mudar a mensagem para "lida"
-function updateSeenStatus(message) {
+function updateSeenStatus(message, userID) {
   console.log("Entered updateSeenStatus");
   console.log("Message", message.text);
-  const url = `http://localhost:16082/messages/setSeen/${message._id}`;
+  const url = `http://${serverIPs}:16082/messages/setSeen/${message._id}`;
 
   fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ userID: userID, recipient: message.recipient }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -3208,12 +3277,15 @@ function updateSeenStatus(message) {
 
 // Lógica para adicionar o número de notificações
 function addNotificationCounter(number) {
-  console.log("Entered function counter");
   const notifCounter = document.getElementById("notification-counter");
+  const newMessage = document.getElementById("new-message-container");
+
   const chat = document.getElementById("chat-container");
   if (chat.classList.contains("minimized")) {
     notifCounter.classList.remove("hidden");
     notifCounter.textContent = number;
+    newMessage.classList.remove("hidden");
+    newMessage.textContent = "New message! ";
   }
 }
 
@@ -3231,6 +3303,15 @@ function checkNotifications() {
         notificationCounter++;
         toggleNotifications(message, "Add");
       }
+      if (
+        message.recipient == "all" &&
+        !message.seenBy.includes(userID) &&
+        message.userID != userID
+      ) {
+        notificationChecker = true;
+        notificationCounter++;
+        toggleNotifications(message, "Add");
+      }
     });
     if (notificationChecker) {
       addNotificationCounter(notificationCounter);
@@ -3241,30 +3322,57 @@ function checkNotifications() {
 // Lóigica para adicionar ou remover as notificações
 function toggleNotifications(data, value, notificationsSeen) {
   //Value -> "Add" ou "Clear"
-  console.log("Data:", data);
+  console.log("Data of message:", data);
   // Dar reset ao marcador de notificação
+  const chat = document.getElementById("chat-container");
   const currentChat = document.getElementById("chat-recipient-select").value;
   const userID = localStorage.getItem("userID");
   const senderID = data.senderID || data.userID;
   const recipient = data.recipient || data.userID;
   const listaUsers = document.getElementById("chat-recipient-select");
   const notificatioCounter = document.getElementById("notification-counter");
+  const newMessage = document.getElementById("new-message-container");
 
   for (i = 0; i <= listaUsers.options.length - 1; i++) {
-    if (
-      listaUsers.options[i].value == senderID &&
-      recipient == userID &&
-      currentChat != senderID
-    ) {
+    if (recipient != "all" && senderID != "all") {
+      if (
+        listaUsers.options[i].value == senderID &&
+        recipient == userID &&
+        currentChat != senderID
+      ) {
+        if (value == "Add") {
+          listaUsers.classList.add("notif-general");
+          listaUsers.options[i].classList.add("notif-on");
+          break;
+        }
+      } else if (
+        listaUsers.options[i].value == senderID &&
+        recipient == userID &&
+        currentChat == senderID
+      ) {
+        if (value == "Clear") {
+          listaUsers.classList.remove("notif-general");
+          listaUsers.options[i].classList.remove("notif-on");
+          if (notificationsSeen) {
+            notificatioCounter.textContent =
+              parseInt(notificatioCounter.textContent - notificationsSeen) < 0
+                ? ""
+                : parseInt(notificatioCounter.textContent - notificationsSeen);
+          }
+
+          break;
+        }
+      }
+    } else if ((recipient == "all", currentChat != "all")) {
       if (value == "Add") {
         listaUsers.classList.add("notif-general");
         listaUsers.options[i].classList.add("notif-on");
         break;
       }
     } else if (
-      listaUsers.options[i].value == senderID &&
-      recipient == userID &&
-      currentChat == senderID
+      listaUsers.options[i].value == "all" &&
+      recipient == "all" &&
+      currentChat == "all"
     ) {
       if (value == "Clear") {
         listaUsers.classList.remove("notif-general");
@@ -3279,6 +3387,16 @@ function toggleNotifications(data, value, notificationsSeen) {
         break;
       }
     }
+  }
+
+  // Para apresentação de "New message!"
+  if (
+    parseInt(notificatioCounter.textContent) <= 0 ||
+    notificatioCounter.textContent == ""
+  ) {
+    newMessage.textContent = "";
+  } else {
+    newMessage.textContent = "New message! ";
   }
 }
 
@@ -3299,7 +3417,10 @@ socket.on("chat-focused", (data) => {
       message.recipient == data.userID &&
       message.seen == false
     ) {
-      updateSeenStatus(message);
+      updateSeenStatus(message, userID);
+      notificationsSeen++;
+    } else if (message.recipient == "all") {
+      updateSeenStatus(message, userID);
       notificationsSeen++;
     }
   });
@@ -3312,7 +3433,7 @@ socket.on("chat-focused", (data) => {
 // Ir buscar todos os usuários (Alterado para apenas os users online)
 
 function fetchAllUsers() {
-  const url = "http://localhost:16082/auth/fetchAllUsers";
+  const url = `http://${serverIPs}:16082/auth/fetchAllUsers`;
 
   fetch(url)
     .then((response) => response.json())
@@ -3323,7 +3444,7 @@ function fetchAllUsers() {
 
 // Ir buscar os users que estão online
 function fetchOnlineUsers() {
-  const url = "http://localhost:16082/userStatus/getOnlineUsers";
+  const url = `http://${serverIPs}:16082/userStatus/getOnlineUsers`;
 
   fetch(url)
     .then((response) => response.json())
@@ -3335,7 +3456,7 @@ function fetchOnlineUsers() {
 //Vai buscar as mensagens apenas do usuário
 function filterMessagesPerUser(value) {
   const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
-  console.log("ALL MESSAGES:", allMessages);
+  //console.log("ALL MESSAGES:", allMessages);
   const userID = localStorage.getItem("userID");
   const filteredObjects = [];
   allMessages.forEach((message) => {
@@ -3365,7 +3486,7 @@ function loadUsersIntoChat() {
   setTimeout(() => {
     const userList = JSON.parse(localStorage.getItem("userList"));
     const onlineUsers = JSON.parse(localStorage.getItem("userListOnline"));
-    console.log("Online Users:\n", onlineUsers);
+    //console.log("Online Users:\n", onlineUsers);
     const currentUser = localStorage.getItem("userID");
 
     //console.log("JSON OBJECT:", userList);
@@ -3388,7 +3509,7 @@ function loadUsersIntoChat() {
         const checkOnlineUser = onlineUsers.find(
           (onUser) => onUser.userID == user._id
         );
-        console.log("Checking Online User:", checkOnlineUser);
+        //console.log("Checking Online User:", checkOnlineUser);
         if (checkOnlineUser) {
           if (checkOnlineUser.isOnline == false) {
             option.classList.add("offline-user");
@@ -3410,11 +3531,13 @@ function loadChatState() {
   const chatImage = document.getElementById("chat-image");
   const chatLogo = document.getElementById("chat-logo");
   const select = document.getElementById("chat-recipient-select");
+  const newMessage = document.getElementById("new-message-container");
 
   if (chatState == "true") {
     chat.classList.remove("minimized");
     minimizeIcon.classList.remove("hidden");
     chatImage.classList.add("hidden");
+    newMessage.classList.add("hidden");
     chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
   } else {
@@ -3423,6 +3546,7 @@ function loadChatState() {
     chat.classList.add("minimized");
     minimizeIcon.classList.add("hidden");
     chatImage.classList.remove("hidden");
+    newMessage.classList.remove("hidden");
     chatLogo.classList.add("hidden");
     select.classList.add("hidden");
   }
@@ -3436,9 +3560,12 @@ function chatToggle() {
   const chatLogo = document.getElementById("chat-logo");
   const notifCounter = document.getElementById("notification-counter");
   const select = document.getElementById("chat-recipient-select");
+  const newMessage = document.getElementById("new-message-container");
+  const messageInput = document.getElementById("chat-message-input");
 
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
+  newMessage.classList.toggle("hidden");
 
   if (chat.classList.contains("minimized")) {
     if (notifCounter.textContent != "0") {
@@ -3454,6 +3581,25 @@ function chatToggle() {
     chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
     chatState = true;
+
+    // Verificar qual a sala de chat que está aberta quando abre o chat (de estar minimizado)
+    const allMessages = JSON.parse(localStorage.getItem("historicoMensagens"));
+    allMessages.forEach((message) => {
+      if (!chat.classList.contains("minimized")) {
+        if (
+          message.userID == recipientInput.value &&
+          message.recipient == userID
+        ) {
+          updateSeenStatus(message, userID);
+          checkNotifications();
+        } else if (message.recipient == "all") {
+          updateSeenStatus(message, userID);
+          checkNotifications();
+        }
+      }
+    });
+
+    messageInput.focus();
   }
   localStorage.setItem("chatState", chatState);
 }
@@ -3544,7 +3690,7 @@ function sendMessage(e) {
 
 // Função de adicionar mensagens á bd
 function storeMessage(dataMessage) {
-  const url = "http://localhost:16082/messages/addMessage";
+  const url = `http://${serverIPs}:16082/messages/addMessage`;
 
   // Envia os dados atualizados para o servidor
   fetch(url, {
@@ -3568,7 +3714,7 @@ function storeMessage(dataMessage) {
 
 // Função de apagar todas as mensagens da bd (aplicada quando muda o nome da corrida)
 function deleteAllMessages() {
-  const url = "http://localhost:16082/messages/deleteMessages";
+  const url = `http://${serverIPs}:16082/messages/deleteMessages`;
 
   fetch(url, { method: "DELETE" })
     .then((response) => {
@@ -3641,7 +3787,7 @@ let activityTimer;
 socket.on("activity", (activityDataRaw) => {
   const userID = localStorage.getItem("userID");
   const activityData = JSON.parse(activityDataRaw);
-  console.log(
+  /* console.log(
     "name: ",
     activityData.name,
     "\nID: ",
@@ -3650,7 +3796,7 @@ socket.on("activity", (activityDataRaw) => {
     userID,
     "\nRecipient: ",
     activityData.recipient
-  );
+  ); */
 
   if (activityData.senderID != userID) {
     if (recipientInput.value == "all" && activityData.recipient == "all") {

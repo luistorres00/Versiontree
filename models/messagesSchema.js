@@ -23,6 +23,9 @@ const messagesSchema = new mongoose.Schema({
   seen: {
     type: Boolean,
   },
+  seenBy: {
+    type: [String],
+  },
 });
 
 const Messages = mongoose.model("Messages", messagesSchema);

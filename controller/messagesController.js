@@ -14,7 +14,6 @@ const addMessage = async (req, res) => {
       seen: false,
     });
     await newMessage.save();
-    console.log("Nova mensagem guardada: ", newMessage);
     res.status(201).json({ message: "Mensagem adicionada com sucesso" });
   } catch (error) {
     console.error(error);
@@ -45,13 +44,24 @@ const deleteMessages = async (req, res) => {
 // Atualiza o estado da mensagem quando vista
 const updateMessageState = async (req, res) => {
   try {
-    const messageId = req.params.id; // get ID from URL
-    console.log("Updating message ID:", messageId);
-    const updatedMessage = await Messages.findOneAndUpdate(
-      { _id: messageId },
-      { $set: { seen: true } },
-      { new: true }
-    );
+    const { userID, recipient } = req.body;
+    const messageId = req.params.id;
+    console.log("Updating message ID:", messageId, "\nRecipient", recipient);
+    let updatedMessage;
+    if (recipient == "all") {
+      updatedMessage = await Messages.updateMany(
+        { recipient: "all" },
+        { $set: { seen: true }, $addToSet: { seenBy: userID } },
+        { new: true }
+      );
+    } else {
+      updatedMessage = await Messages.findOneAndUpdate(
+        { _id: messageId },
+        { $set: { seen: true }, $addToSet: { seenBy: userID } },
+        { new: true }
+      );
+    }
+
     if (!updatedMessage) {
       return res.status(404).json({ error: "Message not found" });
     }
@@ -61,7 +71,6 @@ const updateMessageState = async (req, res) => {
     res.status(500).json({ error: "Erro ao atualizar mensagem" });
   }
 };
-
 
 module.exports = {
   addMessage,

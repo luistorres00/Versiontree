@@ -1,3 +1,18 @@
+let serverIP;
+async function fetchIP() {
+  try {
+    const response = await fetch("/api/getIp");
+    const data = await response.json();
+    localStorage.setItem("currentIP", data.ip.trim());
+    serverIP = data.ip.trim();
+    console.log("SERVER IP:", serverIP);
+    return data.ip;
+  } catch (error) {
+    throw new Error("There was an error fetching the IP: ", error);
+  }
+}
+fetchIP();
+
 // Verifica se o Service Worker é suportado e o registra
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
@@ -49,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (logoutButton) {
       logoutButton.addEventListener("click", function () {
-        fetch("http://localhost:16082/auth/logout", {
+        fetch(`http://${serverIP}:16082/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -148,7 +163,7 @@ function login() {
     password: password,
   };
 
-  fetch("http://localhost:16082/auth/login", {
+  fetch(`http://${serverIP}:16082/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
