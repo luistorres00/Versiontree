@@ -2252,6 +2252,18 @@ label {
   }
 }
 
+@keyframes blinks-notification-header {
+  0% {
+    background-color: red; /* Define o ponto final da cor */
+    color: rgb(255, 255, 255);
+  }
+
+  100% {
+    background-color: orangered; /* Define o ponto inicial da cor */
+    color: rgb(255, 255, 255);
+  }
+}
+
 .notif-on {
   background-color: #e30613;
 }
@@ -2268,6 +2280,15 @@ label {
   border-radius: 5px;
   transition-duration: 1s infinite;
   animation: blinks-notification 1s infinite !important;
+}
+
+.notif-header {
+  background-color: #e29032; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto branco */
+  border: none;
+  border-radius: 5px;
+  transition-duration: 1s infinite;
+  animation: blinks-notification-header 1s infinite !important;
 }
 
 #chat-logo {

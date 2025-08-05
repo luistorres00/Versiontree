@@ -3279,6 +3279,7 @@ function updateSeenStatus(message, userID) {
 function addNotificationCounter(number) {
   const notifCounter = document.getElementById("notification-counter");
   const newMessage = document.getElementById("new-message-container");
+  const chatHeader = document.getElementById("chat-header");
 
   const chat = document.getElementById("chat-container");
   if (chat.classList.contains("minimized")) {
@@ -3286,6 +3287,9 @@ function addNotificationCounter(number) {
     notifCounter.textContent = number;
     newMessage.classList.remove("hidden");
     newMessage.textContent = "New message! ";
+    chatHeader.classList.add("notif-header");
+  } else {
+    chatHeader.classList.remove("notif-header");
   }
 }
 
@@ -3332,6 +3336,7 @@ function toggleNotifications(data, value, notificationsSeen) {
   const listaUsers = document.getElementById("chat-recipient-select");
   const notificatioCounter = document.getElementById("notification-counter");
   const newMessage = document.getElementById("new-message-container");
+  const chatHeader = document.getElementById("chat-header");
 
   for (i = 0; i <= listaUsers.options.length - 1; i++) {
     if (recipient != "all" && senderID != "all") {
@@ -3363,7 +3368,7 @@ function toggleNotifications(data, value, notificationsSeen) {
           break;
         }
       }
-    } else if ((recipient == "all", currentChat != "all")) {
+    } else if (recipient == "all" && currentChat != "all") {
       if (value == "Add") {
         listaUsers.classList.add("notif-general");
         listaUsers.options[i].classList.add("notif-on");
@@ -3387,16 +3392,6 @@ function toggleNotifications(data, value, notificationsSeen) {
         break;
       }
     }
-  }
-
-  // Para apresentação de "New message!"
-  if (
-    parseInt(notificatioCounter.textContent) <= 0 ||
-    notificatioCounter.textContent == ""
-  ) {
-    newMessage.textContent = "";
-  } else {
-    newMessage.textContent = "New message! ";
   }
 }
 
@@ -3562,14 +3557,19 @@ function chatToggle() {
   const select = document.getElementById("chat-recipient-select");
   const newMessage = document.getElementById("new-message-container");
   const messageInput = document.getElementById("chat-message-input");
+  const chatHeader = document.getElementById("chat-header");
 
   chat.classList.toggle("minimized");
   minimizeIcon.classList.toggle("hidden");
   newMessage.classList.toggle("hidden");
 
   if (chat.classList.contains("minimized")) {
-    if (notifCounter.textContent != "0") {
+    if (
+      parseInt(notifCounter.textContent <= 0) ||
+      !notifCounter.textContent == ""
+    ) {
       notifCounter.classList.remove("hidden");
+      chatHeader.classList.add("notif-header");
     }
     chatImage.classList.remove("hidden");
     chatLogo.classList.add("hidden");
@@ -3577,6 +3577,7 @@ function chatToggle() {
     chatState = false;
   } else {
     notifCounter.classList.add("hidden");
+    chatHeader.classList.remove("notif-header");
     chatImage.classList.add("hidden");
     chatLogo.classList.remove("hidden");
     select.classList.remove("hidden");
